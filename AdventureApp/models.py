@@ -1,9 +1,10 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User, AbstractUser
 
 # Create your models here.
-class Customer(AbstractUser):
+
+class Customer(User):
     phone=models.CharField(
         max_length=32,
         validators=[

@@ -1,0 +1,14 @@
+{% extends "ErrTempl.html" %}
+
+
+{% block title %}
+Forbidden
+{% endblock title %}
+
+{% block body %}
+<h1>ACCESS DENIED!</h1>
+{% load static %}
+<img alt="STOP" src="{% static 'police_man_ganson.svg' %}">
+{% load static %}
+<img alt="STOP" src="{% static 'police_man_update.svg' %}">
+{% endblock body %}
