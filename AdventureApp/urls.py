@@ -21,4 +21,6 @@ urlpatterns = [
     path("",views.view_mainpage,name="main_page"),
     path("trip/<int:tid>/",views.view_trip,name="trip"),
     #path("trip/",views.,name="trips"),  #Do we need this one?
+
+    path("trip/add",views.view_add_trip,name="add_trip"),
 ]

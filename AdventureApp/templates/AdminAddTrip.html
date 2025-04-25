@@ -1,0 +1,39 @@
+{% extends "BaseTempl.html" %}
+
+{% block title %}
+Add a new trip
+{% endblock title %}
+
+{% block body %}
+<h1>Add a new trip</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Title</label><br>
+    {{FormTrip.title}}
+    <br><br>
+
+    <label>Description</label><br>
+    {{FormTrip.description}}
+    <br><br>
+
+    <label>Tags</label><br>
+    {{FormTrip.tags}}
+    <br><br>
+
+    <label>Difficulty</label><br>
+    {{FormTrip.difficulty}}
+    <br><br>
+
+    <label>Mediafiles</label><br>
+    <!--{{FormIm.picture.label_tag}}-->
+    {{FormIm.picture}}
+    <br><br>
+
+    <input type="submit" value="Add a new trip">
+</form>
+
+
+
+{% endblock body %}

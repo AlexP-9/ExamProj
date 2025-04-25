@@ -23,3 +23,4 @@ urlpatterns = [
     path("adventures/",include("AdventureApp.urls")),
     path("",lambda request: redirect("adventures/")),
 ]
+
