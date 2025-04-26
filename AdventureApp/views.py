@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
 from .forms import FormAddTrip, FormAddImages
+from .models import Trip, TripGallery
 
 # Create your views here.
 """
@@ -36,25 +37,48 @@ def view_register(request):
 #Trip views (all, individual, etc.)
 """
 def view_mainpage(request):
-    return render(request, "MainPage.html")
+    tripsdb=Trip.objects.all
+    return render(request, "MainPage.html",
+                  {
+                      "trips":tripsdb
+                  })
 
 def view_trip(request, tid):
-    return render(request, "TripPage.html")
+    tripdb=get_object_or_404(Trip,id=tid)
+    picsdb=TripGallery.objects.filter(trip__id=tid)
+    return render(request, "TripPage.html",
+                  {
+                      "tripobj":tripdb,
+                      "picobjs":picsdb,
+                  })
 
 """
 #Administrational views
 """
 #@staff_member_required
-def view_admin_panel(request):
-    return render(request,"AdminPanel.html")
+def view_managing_panel(request):
+    return render(request,"ManagingPanel.html")
 
 #@staff_member_required
 def view_add_trip(request):
     formtrip=FormAddTrip()
     formim=FormAddImages()
     if(request.method=="POST"):
-        return render(request,"AdminAddTrip.html")
+        formtrip=FormAddTrip()
+        formim=FormAddImages()
+        uplimages=request.FILES.getlist("picture")
+        print("Post")
+        print(request.FILES)
+        for i in uplimages:
+            print(i)
+    
     return render(request,"AdminAddTrip.html",{
         "FormTrip":formtrip,
         "FormIm":formim
     })
+
+"""
+#Debug
+"""
+def view_debug(request):
+    return render(request,"Debug.html")

@@ -1,2 +1,13 @@
 {% extends "BaseTempl.html" %}
 
+{% block title %}
+{% endblock %}
+
+{% block body %}
+{{tripobj}}
+
+{% for p in picobjs %}
+<img src="{{ p.picture.url }}">
+{% endfor %}
+
+{% endblock body %}

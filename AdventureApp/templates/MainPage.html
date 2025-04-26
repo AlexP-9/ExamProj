@@ -1,2 +1,9 @@
 {% extends "BaseTempl.html" %}
 
+{% block body %}
+
+{% for t in trips %}
+{{ t }}
+{% endfor %}
+
+{% endblock body %}
