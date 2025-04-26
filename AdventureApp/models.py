@@ -41,7 +41,7 @@ class TripGallery(models.Model):
     #^Should this be able to be NULL?^
     #What happens after deletion, do files stay?
     def __str__(self):
-        return(f"{self.picture.name}")
+        return(f"{self.trip.title} - {self.picture.name}")
     class Meta:
     	verbose_name_plural="Media files"
 
