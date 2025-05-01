@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>{% block title %}Nice title{% endblock title %}</title>
-    </head>
-    <!--<body bgcolor="green">-->
-    <body>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Nice title{% endblock title %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav>
+        <ul class="navbar">
+            <li><a href="{% url 'main_page' %}">Home</a></li>
+            <li><a href="{% url 'add_trip' %}">Add Trip</a></li>
+            <li><a href="{% url 'managing_panel' %}">Manage</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
         {% block body %}{% endblock body %}
-        <footer>(C) 2025 %</footer>
-    </body>
+    </div>
+
+    <footer>(C) 2025 %</footer>
+</body>
 </html>
