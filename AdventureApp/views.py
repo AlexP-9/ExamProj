@@ -82,3 +82,14 @@ def view_add_trip(request):
 """
 def view_debug(request):
     return render(request,"Debug.html")
+
+"""
+#View All Trips
+"""
+
+def view_all_trips(request):
+    all_trips = Trip.objects.all()
+    return render(request, "AllTrips.html", {
+        "trips": all_trips
+    })
+

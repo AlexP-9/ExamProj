@@ -1,0 +1,18 @@
+{% extends "BaseTempl.html" %}
+
+{% block title %}All Trips{% endblock %}
+
+{% block body %}
+<h1>All Trips</h1>
+<div class="trip-gallery">
+    {% for trip in trips %}
+        <div class="trip-card">
+            <h3>{{ trip.title }}</h3>
+            <p>{{ trip.description|truncatewords:20 }}</p>
+            <a href="{% url 'trip' trip.id %}">View Trip</a>
+        </div>
+    {% empty %}
+        <p>No trips available yet.</p>
+    {% endfor %}
+</div>
+{% endblock body %}

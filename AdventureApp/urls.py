@@ -24,6 +24,7 @@ urlpatterns = [
 
     path("manage/",views.view_managing_panel,name="managing_panel"),
     path("trip/add/",views.view_add_trip,name="add_trip"),
+    path("trips/", views.view_all_trips, name="view_all_trips"),
 
     path("debug/",views.view_debug,name="debug"),
 ]

@@ -1,13 +1,19 @@
 {% extends "BaseTempl.html" %}
+{% load static %}
 
 {% block title %}
+{{ tripobj.title }}
 {% endblock %}
 
 {% block body %}
-{{tripobj}}
+<h1 class="trip-title">{{ tripobj.title }}</h1>
+<p class="trip-description">{{ tripobj.description }}</p>
 
-{% for p in picobjs %}
-<img src="{{ p.picture.url }}">
-{% endfor %}
-
+<div class="trip-gallery">
+    {% for p in picobjs %}
+        <img src="{{ p.picture.url }}" alt="Trip image">
+    {% empty %}
+        <p>No images for this trip yet.</p>
+    {% endfor %}
+</div>
 {% endblock body %}
