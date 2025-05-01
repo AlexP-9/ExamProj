@@ -110,7 +110,7 @@ footer {
 }
 
 .newsletter-heading {
-    color: #ff3c00;
+    color: #000000;
     font-size: 36px;
     font-weight: 900;
     font-family: 'Arial Black', sans-serif;
@@ -118,7 +118,7 @@ footer {
 }
 
 .newsletter-subtext {
-    color: #ff3c00;
+    color: #000000;
     font-size: 16px;
     max-width: 600px;
     margin: 0 auto 30px auto;
