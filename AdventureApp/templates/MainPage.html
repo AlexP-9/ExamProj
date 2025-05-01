@@ -1,9 +1,32 @@
 {% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
 
 {% block body %}
+<h1>Welcome to our Travel Site</h1>
 
-{% for t in trips %}
-{{ t }}
-{% endfor %}
+<!-- Trips listing -->
+<div class="trip-gallery">
+    {% for t in trips %}
+        <div class="trip-card">{{ t }}</div>
+    {% endfor %}
+</div>
 
+<!-- Newsletter Sign-up Section -->
+<section class="newsletter-section">
+    <h2 class="newsletter-heading">TRAVEL INSPIRATION STRAIGHT TO<br>YOUR INBOX</h2>
+    <p class="newsletter-subtext">
+        Sign up to receive lots of delicious travel inspiration, tips & tricks and the best travel suggestions straight to your inbox!
+    </p>
+    <form class="newsletter-form" method="POST">
+        {% csrf_token %}
+        <div class="newsletter-input-group">
+            <input type="text" name="first_name" placeholder="First name *" required>
+            <input type="text" name="last_name" placeholder="Last name *" required>
+        </div>
+        <input type="email" name="email" placeholder="Email *" required class="newsletter-email">
+        <button type="submit" class="newsletter-button">SIGN UP</button>
+    </form>
+</section>
 {% endblock body %}
