@@ -12,7 +12,9 @@
         <ul class="navbar">
             <li><a href="{% url 'main_page' %}">Home</a></li>
             <li><a href="{% url 'view_all_trips' %}">Trips</a></li>
+            {% if request.user.is_staff %}
             <li><a href="{% url 'add_trip' %}">Add Trip</a></li>
+            {% endif %}
         </ul>
     </nav>
 
