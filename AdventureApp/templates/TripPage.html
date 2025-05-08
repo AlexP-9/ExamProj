@@ -16,4 +16,17 @@
         <p>No images for this trip yet.</p>
     {% endfor %}
 </div>
+
+
+
+<!--Reviews-->
+{% for r in reviews %}
+    {{r.rating}}/10 "{{r.revtitle}}"</br>
+    {{r.customer}} at {{r.date_created}}</br>
+    {{r.comment}}
+
+</br>
+</br>
+{% endfor %}
+
 {% endblock body %}

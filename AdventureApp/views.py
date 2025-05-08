@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
 from .forms import FormAddTrip, FormAddImages
-from .models import Trip, TripGallery
+from .models import Review, Trip, TripGallery
 
 # Create your views here.
 """
@@ -46,11 +46,20 @@ def view_mainpage(request):
 def view_trip(request, tid):
     tripdb=get_object_or_404(Trip,id=tid)
     picsdb=TripGallery.objects.filter(trip__id=tid)
+    reviewsdb=Review.objects.filter(revtrip=tid)
     return render(request, "TripPage.html",
                   {
                       "tripobj":tripdb,
                       "picobjs":picsdb,
+                      "reviews":reviewsdb,
                   })
+
+def view_all_trips(request):
+    all_trips = Trip.objects.all()
+    return render(request, "AllTrips.html", {
+        "trips": all_trips
+    })
+
 
 """
 #Administrational views
@@ -82,14 +91,3 @@ def view_add_trip(request):
 """
 def view_debug(request):
     return render(request,"Debug.html")
-
-"""
-#View All Trips
-"""
-
-def view_all_trips(request):
-    all_trips = Trip.objects.all()
-    return render(request, "AllTrips.html", {
-        "trips": all_trips
-    })
-
