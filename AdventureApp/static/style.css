@@ -170,3 +170,8 @@ footer {
 .newsletter-button:hover {
     background-color: #ffe5de;
 }
+
+.admintable tr td{
+    border: 1px solid black;
+    border-radius: 10px;
+}

@@ -5,8 +5,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
-from .forms import FormAddTrip, FormAddImages
-from .models import Review, Trip, TripGallery
+from .forms import FormAddTrip, FormAddImages, FormAddSchedule
+from .models import Review, Schedule, Trip, TripGallery
 
 # Create your views here.
 """
@@ -64,11 +64,11 @@ def view_all_trips(request):
 """
 #Administrational views
 """
-#@staff_member_required
+@staff_member_required
 def view_managing_panel(request):
     return render(request,"ManagingPanel.html")
 
-#@staff_member_required
+@staff_member_required
 def view_add_trip(request):
     formtrip=FormAddTrip()
     formim=FormAddImages()
@@ -85,6 +85,85 @@ def view_add_trip(request):
         "FormTrip":formtrip,
         "FormIm":formim
     })
+
+@staff_member_required
+def view_schedule(request):
+    scheddb=Schedule.objects.all()
+    return render(request,"Schedule.html",{
+        "SchedObjs":scheddb
+    })
+
+@staff_member_required
+def view_schedule_add(request):
+    if(request.method=="POST"):
+        formsched=FormAddSchedule(request.POST)
+        if(formsched.is_valid()):
+            #Check if we have overlaps
+            #If there are different guides assigned, then, of course,
+            #the schedules may overlap
+            cleandata=formsched.cleaned_data
+            overlaps=set(Schedule.objects.filter(
+                    start__lte=cleandata["end"],
+                    end__gte=cleandata["start"],
+                    guides__in=cleandata["guides"]
+                ))
+            if(len(overlaps)==0):
+                formsched.save()
+                messages.add_message(request, messages.INFO, "Successfully added a new advenure!")
+                return redirect("manage_schedule")
+
+            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))       
+    else:
+        formsched=FormAddSchedule()
+    return render(request,"ScheduleAdd.html",{
+        "FormSched":formsched
+    })
+
+@staff_member_required
+def view_schedule_edit(request, sched_id):
+    sched=get_object_or_404(Schedule, id=sched_id)
+    if(request.method=="POST"):
+        formsched=FormAddSchedule(request.POST, instance=sched)
+        if(formsched.is_valid()):
+            #Check if we have overlaps
+            #If there are different guides assigned, then, of course,
+            #the schedules may overlap
+            cleandata=formsched.cleaned_data
+            overlaps=set(Schedule.objects.filter(
+                    start__lte=cleandata["end"],
+                    end__gte=cleandata["start"],
+                    guides__in=cleandata["guides"]
+                ).exclude(id=sched_id))
+            if(len(overlaps)==0):
+                formsched.save()
+                messages.add_message(request, messages.INFO, "Changes saved successfully!")
+                return redirect("manage_schedule")   
+            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))
+    else:
+        formsched=FormAddSchedule(instance=sched)
+    return render(request,"ScheduleAdd.html",{
+        "ScheduleEdit":True,
+        "FormSched":formsched
+    })
+
+@staff_member_required
+def view_schedule_delete(request, sched_id):
+    schedobj=get_object_or_404(Schedule, id=sched_id)
+    """
+    if(request.method=="DELETE"):
+        messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
+        return redirect("manage_schedule")  
+    """
+    return render(request, "ScheduleDelete.html",{
+        "s":schedobj,
+    })
+
+@staff_member_required
+def view_schedule_delete_conf(request, sched_id):
+    schedobj=get_object_or_404(Schedule, id=sched_id)
+    schedobj.delete()
+    messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
+    return redirect("manage_schedule")  
 
 """
 #Debug

@@ -19,12 +19,17 @@ from . import views
 
 urlpatterns = [
     path("",views.view_mainpage,name="main_page"),
+    path("trips/", views.view_all_trips, name="view_all_trips"),
     path("trip/<int:tid>/",views.view_trip,name="trip"),
     #path("trip/",views.,name="trips"),  #Do we need this one?
 
     path("manage/",views.view_managing_panel,name="managing_panel"),
+    path("manage/schedule/",views.view_schedule,name="manage_schedule"),
+    path("manage/schedule/add",views.view_schedule_add,name="man_schedule_add"),
+    path("manage/schedule/edit/<int:sched_id>",views.view_schedule_edit,name="man_schedule_edit"),
+    path("manage/schedule/delete/<int:sched_id>",views.view_schedule_delete,name="man_schedule_delete"),
+    path("manage/schedule/delete/<int:sched_id>/confirm",views.view_schedule_delete_conf,name="man_schedule_delete_conf"),
     path("trip/add/",views.view_add_trip,name="add_trip"),
-    path("trips/", views.view_all_trips, name="view_all_trips"),
 
     path("debug/",views.view_debug,name="debug"),
 ]

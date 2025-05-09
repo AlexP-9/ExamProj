@@ -1,0 +1,29 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+{% if ScheduleEdit %}
+Edit schedule
+{% else %}
+Add a new trip to the schedule
+{% endif %}
+{% endblock title %}
+
+{% block body %}
+
+<h1>
+    {% if ScheduleEdit %}
+        Edit schedule
+    {% else %}
+        Add a new trip to the schedule
+    {% endif %}
+</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ FormSched }}
+    <input type="submit" value="{% if ScheduleEdit %}Save changes{% else %}Add{% endif %}">
+</form>
+
+
+{% endblock body %}

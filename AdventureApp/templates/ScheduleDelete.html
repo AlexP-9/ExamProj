@@ -1,0 +1,40 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+Deleting a schedule entry
+{% endblock title %}
+
+{% block body %}
+<h1>Are you sure you want to delete this schedule entry?</h1>
+
+<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+        <th>ID</th>
+        <th>Name</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Price</th>
+        <th>Guides</th>
+        <th>Attendants</th>
+        <th>Max. Attendants</th>
+    </tr>
+    <tr>
+        <td>{{s.id}}</td>
+        <td>{{s.trip.title}}</td>
+        <td>{{s.start}}</td>
+        <td>{{s.end}}</td>
+        <td>{{s.price}}</td>
+        <td>
+            {% for g in s.guides.all %}
+            {{g}}; 
+            {% endfor %}
+        </td>
+        <td>{{s.attendants.count}}</td>
+        <td>{{s.maxattendants}}</td>
+    </tr>
+</table>
+
+<a href="{% url 'man_schedule_delete_conf' s.id %}">[YES]</a></br>
+<a href="{% url 'manage_schedule' %}">[NO]</a>
+
+{% endblock body %}

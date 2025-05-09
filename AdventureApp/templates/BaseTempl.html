@@ -13,10 +13,20 @@
             <li><a href="{% url 'main_page' %}">Home</a></li>
             <li><a href="{% url 'view_all_trips' %}">Trips</a></li>
             {% if request.user.is_staff %}
-            <li><a href="{% url 'add_trip' %}">Add Trip</a></li>
+            <li><a href="{% url 'managing_panel' %}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>
+
+    {% if messages %}
+    <div class="messages">
+        <ul>
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 
     <div class="content">
         {% block body %}{% endblock body %}

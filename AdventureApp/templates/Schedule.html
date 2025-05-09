@@ -1,0 +1,49 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+Schedule
+{% endblock title %}
+
+{% block body %}
+<h1>Schedule</h1>
+
+
+<a href="{% url 'man_schedule_add' %}">[Add new]</a>
+
+<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+    <caption>Schedule</caption>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Price</th>
+        <th>Guides</th>
+        <th>Attendants</th>
+        <th>Max. Attendants</th>
+        <th><!--*Intentionally left blank!* This column will be used for actions--></th>
+    </tr>
+    {% for s in SchedObjs %}
+    <tr>
+        <td>{{s.id}}</td>
+        <td>{{s.trip.title}}</td>
+        <td>{{s.start}}</td>
+        <td>{{s.end}}</td>
+        <td>{{s.price}}</td>
+        <td>
+            {% for g in s.guides.all %}
+            {{g}}; 
+            {% endfor %}
+        </td>
+        <td>{{s.attendants.count}}</td>
+        <td>{{s.maxattendants}}</td>
+        <td>
+            <a href="{% url 'man_schedule_edit' s.id %}">[Edit]</a>
+            <a href="{% url 'man_schedule_delete' s.id %}">[Delete]</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock body %}

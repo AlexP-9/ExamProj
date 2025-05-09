@@ -1,1 +1,8 @@
-SampleCustomer  SampleCustomer
+Login   Password
+
+Admins:
+a   nonblankpassword
+
+Customers:
+SampleCustomer  qaxqaxqax
+SampleCustomer2  qaxqaxqax2

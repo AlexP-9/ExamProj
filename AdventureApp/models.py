@@ -67,8 +67,23 @@ class Schedule(models.Model):
     end=models.DateTimeField()
     price=models.DecimalField(max_digits=12,decimal_places=2)
     maxattendants=models.IntegerField()
-    attendants=models.ManyToManyField(Customer)
+    attendants=models.ManyToManyField(Customer, blank=True, null=True)
     guides=models.ManyToManyField(Guide)
+
+    class Meta:
+        #The starting date can't be >= than the ending date
+        constraints=[
+            models.CheckConstraint(
+                check=models.Q(
+                    start__lte=models.F("end")
+                ),
+                name="starts_earlier_than_finishes"
+            )
+        ]
+
+    def __str__(self):
+        return(f"{self.trip.title} - From {self.start} to {self.end}, {self.attendants.count()} attendants")
+        
 
 class Review(models.Model):
     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
