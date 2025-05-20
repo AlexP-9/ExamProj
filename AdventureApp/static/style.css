@@ -218,8 +218,6 @@ footer {
     line-height: 1.5;
 }
 
-
-
 .cta-specialists-section {
     background-color: #007AFF;
     color: white;
@@ -227,21 +225,21 @@ footer {
     padding: 60px 20px;
 }
 
-.cta-specialists-section .cta-title {
+.cta-title {
     font-size: 32px;
     font-weight: 900;
     margin-bottom: 15px;
     font-family: 'Arial Black', sans-serif;
 }
 
-.cta-specialists-section .cta-subtext {
+.cta-subtext {
     font-size: 16px;
     max-width: 600px;
     margin: 0 auto 30px auto;
     line-height: 1.6;
 }
 
-.cta-specialists-section .cta-button {
+.cta-button {
     background-color: white;
     color: #007AFF;
     padding: 12px 24px;
@@ -251,9 +249,10 @@ footer {
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
     margin-bottom: 40px;
     display: inline-block;
+    transition: background-color 0.3s;
 }
 
-.cta-specialists-section .cta-button:hover {
+.cta-button:hover {
     background-color: #e6e6e6;
 }
 
