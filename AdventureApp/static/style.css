@@ -217,3 +217,75 @@ footer {
     color: #555;
     line-height: 1.5;
 }
+
+
+
+.cta-specialists-section {
+    background-color: #007AFF;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cta-specialists-section .cta-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 15px;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.cta-specialists-section .cta-subtext {
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+}
+
+.cta-specialists-section .cta-button {
+    background-color: white;
+    color: #007AFF;
+    padding: 12px 24px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+    display: inline-block;
+}
+
+.cta-specialists-section .cta-button:hover {
+    background-color: #e6e6e6;
+}
+
+.specialists-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.specialist {
+    text-align: center;
+    max-width: 120px;
+}
+
+.specialist img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.specialist h4 {
+    margin: 10px 0 5px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.specialist p {
+    font-size: 14px;
+    margin: 0;
+}
