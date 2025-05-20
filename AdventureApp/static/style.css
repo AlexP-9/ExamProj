@@ -175,3 +175,45 @@ footer {
     border: 1px solid black;
     border-radius: 10px;
 }
+
+
+
+.features-section {
+    background-color: #f8f8fb;
+    padding: 60px 20px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: left;
+}
+
+.feature-card img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #222;
+}
+
+.feature-card p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+}
