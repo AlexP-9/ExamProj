@@ -1,2 +1,26 @@
 {% extends "BaseTempl.html" %}
 
+{% block title %}
+Log In
+{% endblock title %}
+
+{% block headextra %}
+{% if user.is_authenticated %}
+<script> 
+    window.onload = function() {
+        history.back();
+    }; 
+  </script> 
+{% endif %}
+{% endblock headextra %}
+
+{% block body %}
+<h1>Log in</h1>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" value="{{ username }}" placeholder="Username">
+    <input type="password" name="password" placeholder="Password" autocomplete="off">
+    <button type="submit">Log in</button>
+</form>
+
+{% endblock body %}

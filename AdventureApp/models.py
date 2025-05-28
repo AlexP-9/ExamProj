@@ -8,9 +8,10 @@ class Customer(User):
     phone=models.CharField(
         max_length=32,
         validators=[
-            #RegexValidator(regex="^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
-            #               message="Invalid phone number format!")
+            RegexValidator(regex="^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+                           message="Invalid phone number format!")
         ])
+    newsletter=models.BooleanField()
     class Meta:
     	verbose_name_plural="Customers"
 
@@ -51,13 +52,16 @@ class Guide(models.Model):
     name=models.CharField(max_length=255)
     email=models.EmailField(max_length=255)
     portrait=models.ImageField(upload_to="GuidePics/", blank=True, null=True)
+    description=models.TextField()
+
     phone=models.CharField(
         max_length=32,
         validators=[
-            #RegexValidator(regex="^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
-            #               message="Invalid phone number format!")                   
+            RegexValidator(regex="^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+                           message="Invalid phone number format!")                   
         ]
         )
+
     def __str__(self):
         return(f"{self.name}")
 
@@ -67,7 +71,7 @@ class Schedule(models.Model):
     end=models.DateTimeField()
     price=models.DecimalField(max_digits=12,decimal_places=2)
     maxattendants=models.IntegerField()
-    attendants=models.ManyToManyField(Customer, blank=True, null=True)
+    attendants=models.ManyToManyField(Customer, blank=True)
     guides=models.ManyToManyField(Guide)
 
     class Meta:

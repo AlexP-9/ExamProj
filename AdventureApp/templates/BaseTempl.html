@@ -5,6 +5,8 @@
     <title>{% block title %}Adventure Travel{% endblock title %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block headextra %}
+    {% endblock headextra %}
 </head>
 <body>
     <!-- Navigation bar -->
@@ -14,6 +16,15 @@
             <li><a href="{% url 'view_all_trips' %}">Trips</a></li>
             {% if request.user.is_staff %}
             <li><a href="{% url 'managing_panel' %}">Manage</a></li>
+            {% endif %}
+
+
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'logout' %}">Log out</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Log in</a></li>
+            <li><a href="{% url 'registration' %}">Sign up</a></li>
             {% endif %}
         </ul>
     </nav>
@@ -32,6 +43,6 @@
         {% block body %}{% endblock body %}
     </div>
 
-    <footer>(C) 2025 %</footer>
+    <footer>(C) 2025 %  <a href="{% url 'about' %}">About us</a></footer>
 </body>
 </html>

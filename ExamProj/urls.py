@@ -21,10 +21,16 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
 
+import AdventureApp, AdventureApp.views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("adventures/",include("AdventureApp.urls")),
     path("",lambda request: redirect("adventures/")),
+
+    path("accounts/login/",AdventureApp.views.view_login, name="login"),
+    path("accounts/logout/",AdventureApp.views.view_logout, name="logout"),
+    path("accounts/registration/",AdventureApp.views.view_register, name="registration"),
 ]
 
 #A workaround so that we don't have to serve media files

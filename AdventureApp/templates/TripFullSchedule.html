@@ -1,0 +1,24 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+{{ tripobj.title }}
+{% endblock %}
+
+{% block body %}
+<h1 class="trip-title">Full schedule for {{ tripobj.title }}</h1>
+
+<a href="{% url 'trip' tripobj.id %}">Back to the trip page</a>
+
+{% if schedule %}
+    <ul>
+    {% for s in schedule %}
+        <li><a href="{% url 'trip_register' s.id %}">{{s.start}}</a><br></li>
+    {% endfor %}
+    </ul>
+{% else %}
+<p>(No scheduled dates so far)</p>
+{% endif %}
+
+
+{% endblock body %}

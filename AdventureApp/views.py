@@ -6,7 +6,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
 from .forms import FormAddTrip, FormAddImages, FormAddSchedule
-from .models import Review, Schedule, Trip, TripGallery
+from .models import Guide, Review, Schedule, Trip, TripGallery
+
+from datetime import datetime
 
 # Create your views here.
 """
@@ -19,7 +21,8 @@ def view_login(request):
         user=authenticate(request,username=uname,password=passw)
         if user:    #if user is not None:
             login(request,user)
-            return redirect(request.GET.get("next",""))
+            return redirect("main_page")
+            #return redirect(request.GET.get("next",""))
         messages.add_message(request, messages.WARNING, "Incorrect password!")
         return render(request,"LogIn.html",{
             "username":uname            
@@ -28,31 +31,47 @@ def view_login(request):
 
 def view_logout(request):
     logout(request)
-    return redirect("")
+    return redirect("main_page")
 
 def view_register(request):
-    return render()
+    
+    return render(request, "Register.html")
+
+def view_profile(request):
+    return render(request,"Profile.html")
 
 """
 #Trip views (all, individual, etc.)
 """
 def view_mainpage(request):
     tripsdb=Trip.objects.all
+    guidesdb=Guide.objects.all
     return render(request, "MainPage.html",
                   {
-                      "trips":tripsdb
+                      "trips":tripsdb,
+                      "guides":guidesdb
                   })
 
 def view_trip(request, tid):
     tripdb=get_object_or_404(Trip,id=tid)
     picsdb=TripGallery.objects.filter(trip__id=tid)
     reviewsdb=Review.objects.filter(revtrip=tid)
+    scheddb=Schedule.objects.filter(trip__id=tid, start__gt=datetime.today().date())
     return render(request, "TripPage.html",
                   {
                       "tripobj":tripdb,
                       "picobjs":picsdb,
                       "reviews":reviewsdb,
+                      "schedule":scheddb
                   })
+
+def view_trip_full_schedule(request, tid):
+    tripdb=get_object_or_404(Trip,id=tid)
+    scheddb=Schedule.objects.filter(trip__id=tid, start__gt=datetime.today().date())
+    return render(request, "TripFullSchedule.html",{
+        "tripobj":tripdb,
+        "schedule":scheddb
+    })
 
 def view_all_trips(request):
     all_trips = Trip.objects.all()
@@ -60,6 +79,12 @@ def view_all_trips(request):
         "trips": all_trips
     })
 
+def view_trip_register(request, sid):   #SID = Schedule ID, so that we could filter out the old and fully-booked trips
+    scheddb=Schedule.objects.filter(id=sid) #This is a workaround so that the user doesn't get a 404 error
+
+    return render(request, "TripRegister.html",{
+        "scheddb":scheddb
+    })
 
 """
 #Administrational views
@@ -89,8 +114,14 @@ def view_add_trip(request):
 @staff_member_required
 def view_schedule(request):
     scheddb=Schedule.objects.all()
+    today=datetime.today().date()
+    schedpast=scheddb.filter(end__lt=today)
+    schedfuture=scheddb.filter(start__gt=today)
+    schedactive=scheddb.filter(start__lte=today, end__gte=today)
     return render(request,"Schedule.html",{
-        "SchedObjs":scheddb
+        "SchedObjsPast":schedpast,
+        "SchedObjsFuture":schedfuture,
+        "SchedObjsActive":schedactive,
     })
 
 @staff_member_required
@@ -170,3 +201,15 @@ def view_schedule_delete_conf(request, sched_id):
 """
 def view_debug(request):
     return render(request,"Debug.html")
+
+
+"""
+#Misc. stuff
+"""
+
+def view_about(request):
+    guidesdb=Guide.objects.all
+    return render(request, "About.html",
+                  {
+                      "guides":guidesdb
+                  })

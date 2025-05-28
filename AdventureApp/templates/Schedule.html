@@ -12,7 +12,7 @@ Schedule
 <a href="{% url 'man_schedule_add' %}">[Add new]</a>
 
 <table class="admintable" style="border: 1px solid black; border-radius: 10px;">
-    <caption>Schedule</caption>
+    <caption>Active trips</caption>
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -24,7 +24,81 @@ Schedule
         <th>Max. Attendants</th>
         <th><!--*Intentionally left blank!* This column will be used for actions--></th>
     </tr>
-    {% for s in SchedObjs %}
+    {% for s in SchedObjsActive %}
+    <tr>
+        <td>{{s.id}}</td>
+        <td>{{s.trip.title}}</td>
+        <td>{{s.start}}</td>
+        <td>{{s.end}}</td>
+        <td>{{s.price}}</td>
+        <td>
+            {% for g in s.guides.all %}
+            {{g}}; 
+            {% endfor %}
+        </td>
+        <td>{{s.attendants.count}}</td>
+        <td>{{s.maxattendants}}</td>
+        <td>
+            <a href="{% url 'man_schedule_edit' s.id %}">[Edit]</a>
+            <a href="{% url 'man_schedule_delete' s.id %}">[Delete]</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+    <br><br>
+
+<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+    <caption>Future trips</caption>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Price</th>
+        <th>Guides</th>
+        <th>Attendants</th>
+        <th>Max. Attendants</th>
+        <th><!--*Intentionally left blank!* This column will be used for actions--></th>
+    </tr>  
+    {% for s in SchedObjsFuture %}
+    <tr>
+        <td>{{s.id}}</td>
+        <td>{{s.trip.title}}</td>
+        <td>{{s.start}}</td>
+        <td>{{s.end}}</td>
+        <td>{{s.price}}</td>
+        <td>
+            {% for g in s.guides.all %}
+            {{g}}; 
+            {% endfor %}
+        </td>
+        <td>{{s.attendants.count}}</td>
+        <td>{{s.maxattendants}}</td>
+        <td>
+            <a href="{% url 'man_schedule_edit' s.id %}">[Edit]</a>
+            <a href="{% url 'man_schedule_delete' s.id %}">[Delete]</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+    <caption>Past trips</caption>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Price</th>
+        <th>Guides</th>
+        <th>Attendants</th>
+        <th>Max. Attendants</th>
+        <th><!--*Intentionally left blank!* This column will be used for actions--></th>
+    </tr>
+    {% for s in SchedObjsPast %}
     <tr>
         <td>{{s.id}}</td>
         <td>{{s.trip.title}}</td>

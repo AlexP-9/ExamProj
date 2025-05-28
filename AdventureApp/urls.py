@@ -21,7 +21,17 @@ urlpatterns = [
     path("",views.view_mainpage,name="main_page"),
     path("trips/", views.view_all_trips, name="view_all_trips"),
     path("trip/<int:tid>/",views.view_trip,name="trip"),
+    path("trip/<int:tid>/schedules",views.view_trip_full_schedule,name="trip_full_schedule"),
     #path("trip/",views.,name="trips"),  #Do we need this one?
+    path("trips/register/<int:sid>", views.view_trip_register, name="trip_register"),
+
+    path("profile/",views.view_profile,name="profile"),
+
+    path("about/",views.view_about,name="about"),
+
+    #path("login/",views.view_login,name="login"),
+    #path("register/",views.view_register,name="login"),
+    #path("logout/",views.view_logout,name="logout"),
 
     path("manage/",views.view_managing_panel,name="managing_panel"),
     path("manage/schedule/",views.view_schedule,name="manage_schedule"),

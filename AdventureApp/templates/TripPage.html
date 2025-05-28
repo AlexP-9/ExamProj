@@ -9,6 +9,21 @@
 <h1 class="trip-title">{{ tripobj.title }}</h1>
 <p class="trip-description">{{ tripobj.description }}</p>
 
+<p>Closest scheduled dates:</p>
+{% if schedule %}
+    <ul>
+    {% for s in schedule|slice:":10" %}
+    <li><a href="{% url 'trip_register' s.id %}">{{s.start}}</a><br></li>
+    {% endfor %}
+    </ul>
+    <br>
+    <a href="{% url 'trip_full_schedule' tripobj.id %}">[View all]</a>
+{% else %}
+<p>(No scheduled dates so far)</p>
+{% endif %}
+
+
+
 <div class="trip-gallery">
     {% for p in picobjs %}
         <img src="{{ p.picture.url }}" alt="Trip image">
@@ -20,13 +35,28 @@
 
 
 <!--Reviews-->
+<h3>Reviews</h3>
 {% for r in reviews %}
-    {{r.rating}}/10 "{{r.revtitle}}"</br>
-    {{r.customer}} at {{r.date_created}}</br>
-    {{r.comment}}
+<table class="admintable">
+    <tr>
+        <td>{{r.rating}}/10</td>
+        <td>"{{r.revtitle}}"</td>
+    </tr>
+    <tr>
+        <td>{{r.customer}} at {{r.date_created}}</td>
+    </tr>
+    
+    <tr>
+        <td>{{r.comment}}</td>
+    </tr>
+</table>
+</br>
+</br>
 
-</br>
-</br>
+{% empty %}
+
+There are no reviews... Yet!
+
 {% endfor %}
 
 {% endblock body %}

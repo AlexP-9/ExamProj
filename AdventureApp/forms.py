@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
-from .models import Schedule, Trip, TripGallery
+from .models import Schedule, Trip, TripGallery, Customer
 
 #https://stackoverflow.com/questions/77212709/django-clearablefileinput-does-not-support-uploading-multiple-files-error
 
@@ -71,3 +71,9 @@ class FormAddSchedule(forms.ModelForm):
             raise ValidationError(f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))
         return cleandata
     """
+
+
+class FormRegister(forms.ModelForm):
+    class Meta:
+        model=Customer
+        exclude=[]

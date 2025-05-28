@@ -1,0 +1,54 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+{{ tripobj.title }}
+{% endblock %}
+
+{% block body %}
+
+{% if scheddb.0 %}
+
+    {% if request.user.is_staff %}
+        <h1>Wait just a moment, you're a staff member!</h1>
+        <h2>Don't worry, you can still register. We all deserve a break :-)</h2>
+    {% endif %}
+
+    <a href="{% url 'trip' scheddb.0.trip.id %}">Back to the trip page</a>
+
+    <p>Trip details:</p>
+    <table class="admintable">
+        <tr>
+            <td>Name</td>
+            <td>{{scheddb.0.trip.title}}</td>
+        </tr>
+        <tr>
+            <td>Start date</td>
+            <td>{{scheddb.0.start}}</td>
+        </tr>
+        <tr>
+            <td>End date</td>
+            <td>{{scheddb.0.end}}</td>
+        </tr>
+        <tr>
+            <td>Participants</td>
+            <td>{{scheddb.0.attendants.count}}/{{scheddb.0.maxattendants}}</td>
+        </tr>
+    </table>
+
+    {% if request.user in scheddb.0.attendants %}
+    <p>You are already registered!</p>
+    {% else %}
+        {% if request.user.is_authenticated %}
+        <a href="">[Register!]</a>
+        {% else %}
+        You need to <a href="{% url 'login' %}">log in</a> or <a href="{% url 'registration' %}">sign up</a> to register!
+        {% endif %}
+    {% endif %}
+
+{% else %}
+    <h1>Error: invalid schedule ID!</h1>
+{% endif %}
+
+
+{% endblock body %}
