@@ -11,6 +11,10 @@ Home
 <h2>*short description, something like "find the best trip that fits you"*</h2>
 
 <h3>Nearest available trips:</h3>
-
+<ul>
+    {% for s in availsched %}
+    <li><a href="{% url 'trip' s.trip.id %}">{{s.trip.title}} - {{s.start}}</a></li>
+    {% endfor %}
+</ul>
 
 {% endblock body %}

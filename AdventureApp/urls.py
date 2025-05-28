@@ -24,10 +24,12 @@ urlpatterns = [
     path("trip/<int:tid>/schedules",views.view_trip_full_schedule,name="trip_full_schedule"),
     #path("trip/",views.,name="trips"),  #Do we need this one?
     path("trips/register/<int:sid>", views.view_trip_register, name="trip_register"),
+    path("trips/register/<int:sid>/confirm", views.view_trip_register_confirm, name="trip_register_confirm"),
 
     path("profile/",views.view_profile,name="profile"),
 
     path("about/",views.view_about,name="about"),
+    path("contact/",views.view_contact,name="contact"),
 
     #path("login/",views.view_login,name="login"),
     #path("register/",views.view_register,name="login"),

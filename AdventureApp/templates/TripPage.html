@@ -9,7 +9,7 @@
 <h1 class="trip-title">{{ tripobj.title }}</h1>
 <p class="trip-description">{{ tripobj.description }}</p>
 
-<p>Closest scheduled dates:</p>
+<p>Closest available dates:</p>
 {% if schedule %}
     <ul>
     {% for s in schedule|slice:":10" %}
