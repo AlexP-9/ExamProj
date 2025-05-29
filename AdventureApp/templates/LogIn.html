@@ -10,17 +10,21 @@ Log In
     window.onload = function() {
         history.back();
     }; 
-  </script> 
+</script> 
 {% endif %}
 {% endblock headextra %}
 
 {% block body %}
-<h1>Log in</h1>
-<form method="post">
+
+<h1 class="auth-title">Log in</h1>
+<div class="form-container">
+  <form method="post" class="styled-form">
     {% csrf_token %}
-    <input type="text" name="username" value="{{ username }}" placeholder="Username">
-    <input type="password" name="password" placeholder="Password" autocomplete="off">
-    <button type="submit">Log in</button>
+    <input type="text" name="username" class="input-field" placeholder="Username">
+    <input type="password" name="password" class="input-field" placeholder="Password">
+    <button type="submit" class="red-button">Log in</button>
 </form>
+
+</div>
 
 {% endblock body %}

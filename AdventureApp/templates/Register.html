@@ -4,18 +4,25 @@
 Registration
 {% endblock title %}
 
-
 {% block body %}
-<h1>Registration</h1>
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="username" value="" placeholder="Username"><br/>
-    <input type="tel" name="phone" value="" pattern="^\+?1?\d{9,15}$" placeholder="Phone number (e.g. +4712345678)"><br/>
-    <input type="password" name="password" placeholder="Password" autocomplete="off"><br/>
-    <input type="password" name="password_check" placeholder="Repeat password" autocomplete="off"><br/>
-    <input type="checkbox" name="newsletter"><label for="newsletter">I want to subscribe to the newsletter</label><br/>
-    <br/>
-    <button type="submit">Register!</button>
-</form>
 
+<h1 class ="auth-title">Registration</h1>
+<div class="styled-form">
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" value="" placeholder="Username" class="input-field" />
+    
+    <input type="tel" name="phone" value="" pattern="^\+?1?\d{9,15}$" placeholder="Phone number (e.g. +4712345678)" class="input-field" />
+    
+    <input type="password" name="password" placeholder="Password" autocomplete="off" class="input-field" />
+    
+    <input type="password" name="password_check" placeholder="Repeat password" autocomplete="off" class="input-field" />
+    
+    <label style="align-self: flex-start; margin-bottom: 10px;">
+      <input type="checkbox" name="newsletter"> I want to subscribe to the newsletter
+    </label>
+    
+    <button type="submit" class="red-button">Register!</button>
+  </form>
+</div>
 {% endblock body %}
