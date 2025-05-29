@@ -7,7 +7,7 @@ body {
 
 /* ========== NAVIGATION BAR ========== */
 nav {
-    background-color: #a63d3d;
+    background-color: #aa2525;
     padding: 0 24px;
     height: 60px;
     overflow: hidden;
@@ -32,8 +32,8 @@ nav {
 }
 
 .nav-logo {
-    height: 48px;
-    max-height: 48px;
+    height: 2000px;
+    max-height: 200px;
     width: auto;
     object-fit: contain;
     display: block;
