@@ -9,7 +9,6 @@
     {% endblock headextra %}
 </head>
 <body>
-    <!-- Navigation bar -->
     <nav>
         <ul class="navbar">
             <li><a href="{% url 'main_page' %}">Home</a></li>
@@ -17,18 +16,17 @@
             {% if request.user.is_staff %}
             <li><a href="{% url 'managing_panel' %}">Manage</a></li>
             {% endif %}
-
-
             {% if request.user.is_authenticated %}
             <li><a href="{% url 'profile' %}">Profile</a></li>
             <li><a href="{% url 'logout' %}">Log out</a></li>
             {% else %}
             <li><a href="{% url 'login' %}">Log in</a></li>
-            <li><a href="{% url 'registration' %}">Sign up</a></li>
+            <li><a href="{% url 'registration' %}" class="nav-signup-button">Sign up</a></li>
             {% endif %}
         </ul>
     </nav>
-
+    
+      
     {% if messages %}
     <div class="messages">
         <ul>
