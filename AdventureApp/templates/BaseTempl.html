@@ -10,21 +10,36 @@
 </head>
 <body>
     <nav>
-        <ul class="navbar">
-            <li><a href="{% url 'main_page' %}">Home</a></li>
-            <li><a href="{% url 'view_all_trips' %}">Trips</a></li>
-            {% if request.user.is_staff %}
-            <li><a href="{% url 'managing_panel' %}">Manage</a></li>
-            {% endif %}
-            {% if request.user.is_authenticated %}
-            <li><a href="{% url 'profile' %}">Profile</a></li>
-            <li><a href="{% url 'logout' %}">Log out</a></li>
-            {% else %}
-            <li><a href="{% url 'login' %}">Log in</a></li>
-            <li><a href="{% url 'registration' %}" class="nav-signup-button">Sign up</a></li>
-            {% endif %}
-        </ul>
+        <div class="nav-container">
+            <!-- Left: Logo -->
+            <div class="nav-left">
+                <a href="{% url 'main_page' %}" class="logo-link">
+                    <img src="{% static 'images/travana.png' %}" alt="Travana" class="nav-logo">
+                </a>
+            </div>
+    
+            <!-- Center: Menu -->
+            <ul class="navbar">
+                <li><a href="{% url 'main_page' %}">Home</a></li>
+                <li><a href="{% url 'view_all_trips' %}">Trips</a></li>
+                {% if request.user.is_staff %}
+                <li><a href="{% url 'managing_panel' %}">Manage</a></li>
+                {% endif %}
+            </ul>
+    
+            <!-- Right: Auth -->
+            <div class="nav-right">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="nav-auth-link">Profile</a>
+                    <a href="{% url 'logout' %}" class="nav-auth-link">Log out</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-auth-link">Log in</a>
+                    <a href="{% url 'registration' %}" class="nav-signup-button">Sign up</a>
+                {% endif %}
+            </div>
+        </div>
     </nav>
+    
     
       
     {% if messages %}
