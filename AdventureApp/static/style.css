@@ -112,6 +112,45 @@ footer {
     margin-top: 40px;
 }
 
+/* ========== HOME PAGE STYLES ========== */
+.homepage-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.homepage-header h1 {
+  font-family: 'Lucida Sans';
+  font-size: 100px;
+}
+
+.mainpage-background {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+/* Background image with blur */
+.mainpage-background::before {
+  content: "";
+  background: url('/static/images/backgroundd.jpg') no-repeat center center/cover;
+  filter: blur(2px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+
+
+
 /* ========== TRIP PAGE STYLES ========== */
 .trip-title {
     font-size: 28px;
@@ -124,49 +163,170 @@ footer {
     margin-bottom: 20px;
 }
 
+.trip-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+}
+
+.trip-header ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+
+.trip-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 20px;
+}
+
+.photo-tile {
+  width: 100%;
+  max-width: 320px;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.photo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.photo-tile img:hover {
+  transform: scale(1.05);
+}
+
+/* ========== REVIEWS SECTION ========== */
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.review-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.review-rating {
+  font-size: 20px;
+  font-weight: bold;
+  color: #004466;
+}
+
+.review-title {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.review-meta {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.review-comment {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+}
+
+
+
+.continent-title {
+  text-align: center;
+  font-size: 36px;
+  margin-top: 30px;
+}
+
 .trip-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.trip-gallery img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-}
-
-.trip-gallery img:hover {
-    transform: scale(1.03);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 20px;
+  justify-items: center;
 }
 
 .trip-card {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.trip-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.trip-card-body {
+  padding: 15px;
+  text-align: left;
+}
+
+.trip-card-body h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.trip-card-body p {
+  font-size: 14px;
+  color: #555;
+}
+
+.trip-card-body a {
+  color: #004466;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.trip-card-body a:hover {
+  text-decoration: underline;
+}
+
+/* ========== TRIP CARD IMAGE STYLING ========== */
+.trip-card-image {
+  width: 100%;
+  height: 200px; /* fixed height */
+  object-fit: cover; /* crop & fill the area */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+
+.trip-card-content {
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    width: 250px;
-    text-align: center;
+    flex: 1; /* stretches to fill height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.trip-card h3 {
-    margin-top: 0;
-}
 
-.trip-card a {
-    text-decoration: none;
-    color: #004466;
-    font-weight: bold;
-}
 
-.trip-card a:hover {
-    text-decoration: underline;
-}
 
 /* ========== NEWSLETTER SECTION ========== */
 .newsletter-section {
@@ -356,3 +516,4 @@ footer {
     font-size: 14px;
     margin: 0;
 }
+

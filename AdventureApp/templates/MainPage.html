@@ -6,15 +6,29 @@ Home
 
 
 {% block body %}
-<h1>*WHAT WAS THE TITLE OF THE PROJECT AGAIN*</h1>
+<div class="mainpage-background">
+    <div class="homepage-header">
+    <h1>ADVENTURE<br>TRAVELERS</h1>
+    <h2>It's a Big World Out There, Go Explore!</h2>
+    <h3><u>Nearest available trips</u></h3>
+    </div>
 
-<h2>It's a Big World Out There, Go Explore </h2>
-
-<h3>Nearest available trips:</h3>
-<ul>
+    <div class="trip-gallery">
     {% for s in availsched %}
-    <li><a href="{% url 'trip' s.trip.id %}">{{s.trip.title}} - {{s.start}}</a></li>
+        <div class="trip-card">
+        {% with s.trip.tripgallery_set.first as first_image %}
+            {% if first_image %}
+            <img src="{{ first_image.picture.url }}" class="trip-card-image" alt="{{ s.trip.title }}">
+            {% endif %}
+        {% endwith %}
+        <div class="trip-card-body">
+            <h3>{{ s.trip.title }}</h3>
+            <p><strong>Available:</strong> {{ s.start }}</p>
+            <a href="{% url 'trip' s.trip.id %}">View Trip</a>
+        </div>
+        </div>
     {% endfor %}
-</ul>
+    </div>
+</div>
 
 {% endblock body %}

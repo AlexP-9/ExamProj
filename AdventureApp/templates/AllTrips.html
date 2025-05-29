@@ -3,16 +3,24 @@
 {% block title %}All Trips{% endblock %}
 
 {% block body %}
-<h1>All Trips</h1>
+<h1 class="continent-title">All Trips</h1>
+
 <div class="trip-gallery">
-    {% for trip in trips %}
-        <div class="trip-card">
-            <h3>{{ trip.title }}</h3>
-            <p>{{ trip.description|truncatewords:20 }}</p>
-            <a href="{% url 'trip' trip.id %}">View Trip</a>
-        </div>
-    {% empty %}
-        <p>No trips available yet.</p>
-    {% endfor %}
+  {% for trip in trips %}
+    <div class="trip-card">
+      {% with trip.tripgallery_set.first as first_image %}
+        {% if first_image %}
+          <img src="{{ first_image.picture.url }}" class="trip-card-image" alt="{{ trip.title }}">
+        {% endif %}
+      {% endwith %}
+      <div class="trip-card-body">
+        <h3>{{ trip.title }}</h3>
+        <p>{{ trip.description|truncatewords:20 }}</p>
+        <a href="{% url 'trip' trip.id %}">View Trip</a>
+      </div>
+    </div>
+  {% empty %}
+    <p>No trips available yet.</p>
+  {% endfor %}
 </div>
 {% endblock body %}
