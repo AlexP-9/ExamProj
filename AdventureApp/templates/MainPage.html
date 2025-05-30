@@ -4,31 +4,51 @@
 Home
 {% endblock title %}
 
-
 {% block body %}
 <div class="mainpage-background">
     <div class="homepage-header">
-    <h1>ADVENTURE<br>TRAVELERS</h1>
-    <h2><i>It's a Big World Out There, Go Explore!</i></h2>
-    <h3><u>Nearest Available Trips</u></h3>
+        <h1>ADVENTURE<br>TRAVELERS</h1>
+        <h2><i>It's a Big World Out There, Go Explore!</i></h2>
+        <h3><u>Nearest Available Trips</u></h3>
     </div>
 
     <div class="trip-gallery">
-    {% for s in availsched %}
+        {% for s in availsched %}
         <div class="trip-card">
-        {% with s.trip.tripgallery_set.first as first_image %}
-            {% if first_image %}
-            <img src="{{ first_image.picture.url }}" class="trip-card-image" alt="{{ s.trip.title }}">
-            {% endif %}
-        {% endwith %}
-        <div class="trip-card-body">
-            <h3>{{ s.trip.title }}</h3>
-            <p><strong>Available:</strong> {{ s.start }}</p>
-            <a href="{% url 'trip' s.trip.id %}">View Trip</a>
+            {% with s.trip.tripgallery_set.first as first_image %}
+                {% if first_image %}
+                <img src="{{ first_image.picture.url }}" class="trip-card-image" alt="{{ s.trip.title }}">
+                {% endif %}
+            {% endwith %}
+            <div class="trip-card-body">
+                <h3>{{ s.trip.title }}</h3>
+                <p><strong>Available:</strong> {{ s.start }}</p>
+                <a href="{% url 'trip' s.trip.id %}">View Trip</a>
+            </div>
         </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 </div>
 
+<!-- Newsletter Sign-up Section -->
+<section class="newsletter-section">
+    <h2 class="newsletter-heading">TRAVEL INSPIRATION STRAIGHT TO<br>YOUR INBOX</h2>
+    <p class="newsletter-subtext">
+        Sign up to receive lots of delicious travel inspiration, tips & tricks and the best travel suggestions straight to your inbox!
+    </p>
+
+    <form class="newsletter-form" method="POST">
+        {% csrf_token %}
+        <div class="newsletter-row">
+            <input type="text" name="first_name" placeholder="First name *" required>
+            <input type="text" name="last_name" placeholder="Last name *" required>
+        </div>
+        <div class="newsletter-row">
+            <input type="email" name="email" placeholder="Email *" required>
+        </div>
+        <div class="newsletter-button-container">
+            <button type="submit" class="newsletter-button">SIGN UP</button>
+        </div>
+    </form>
+</section>
 {% endblock body %}

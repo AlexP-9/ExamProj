@@ -73,26 +73,5 @@
 </section>
 
 
-<!-- Newsletter Sign-up Section -->
-<section class="newsletter-section">
-    <h2 class="newsletter-heading">TRAVEL INSPIRATION STRAIGHT TO<br>YOUR INBOX</h2>
-    <p class="newsletter-subtext">
-        Sign up to receive lots of delicious travel inspiration, tips & tricks and the best travel suggestions straight to your inbox!
-    </p>
-
-    <form class="newsletter-form" method="POST">
-        {% csrf_token %}
-        <div class="newsletter-row">
-            <input type="text" name="first_name" placeholder="First name *" required>
-            <input type="text" name="last_name" placeholder="Last name *" required>
-        </div>
-        <div class="newsletter-row">
-            <input type="email" name="email" placeholder="Email *" required>
-        </div>
-        <div class="newsletter-button-container">
-            <button type="submit" class="newsletter-button">SIGN UP</button>
-        </div>
-    </form>
-</section>
 
 {% endblock body %}
