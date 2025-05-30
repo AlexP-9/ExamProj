@@ -11,19 +11,26 @@ Add a new trip to the schedule
 
 {% block body %}
 
-<h1>
+<div class="schedule-admin-wrapper">
+  <h1 class="trip-title">
     {% if ScheduleEdit %}
-        Edit schedule
+      Edit schedule
     {% else %}
-        Add a new trip to the schedule
+      Add a New Trip To the Schedule
     {% endif %}
-</h1>
+  </h1>
 
-<form method="post">
+  <form method="post" class="styled-form" style="width: 100%; max-width: 420px; margin: 0 auto;">
     {% csrf_token %}
-    {{ FormSched }}
-    <input type="submit" value="{% if ScheduleEdit %}Save changes{% else %}Add{% endif %}">
-</form>
-
+    {{ FormSched.as_p }}
+    <button type="submit" class="red-button">
+      {% if ScheduleEdit %}
+        Save changes
+      {% else %}
+        Add
+      {% endif %}
+    </button>
+  </form>
+</div>
 
 {% endblock body %}

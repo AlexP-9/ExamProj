@@ -6,46 +6,52 @@
 {% endblock %}
 
 {% block body %}
+<div class="trip-register-wrapper">
 
-{% if request.user.is_staff %}
-        <h1>Wait just a moment, you're a staff member!</h1>
-        <h2>We all deserve a break, so please contact your boss about this :-)</h2>
+  {% if request.user.is_staff %}
+      <h1 class="trip-title">Wait just a moment, you're a staff member!</h1>
+      <p class="note-text">We all deserve a break, so please contact your boss about this :-)</p>
 
-{% elif scheddb.0 %}
+  {% elif scheddb.0 %}
+      <a href="{% url 'trip' scheddb.0.trip.id %}" class="back-link">← Back to the trip page</a>
 
-    <a href="{% url 'trip' scheddb.0.trip.id %}">Back to the trip page</a>
+      <h2 class="trip-title">Trip details</h2>
 
-    <p>Trip details:</p>
-    <table class="admintable">
-        <tr>
-            <td>Name</td>
-            <td>{{scheddb.0.trip.title}}</td>
-        </tr>
-        <tr>
-            <td>Start date</td>
-            <td>{{scheddb.0.start}}</td>
-        </tr>
-        <tr>
-            <td>End date</td>
-            <td>{{scheddb.0.end}}</td>
-        </tr>
-        <tr>
-            <td>Participants</td>
-            <td>{{scheddb.0.attendants.count}}/{{scheddb.0.maxattendants}}</td>
-        </tr>
-    </table>
+      <table class="trip-details-table">
+          <tr>
+              <td>Name</td>
+              <td>{{ scheddb.0.trip.title }}</td>
+          </tr>
+          <tr>
+              <td>Start date</td>
+              <td>{{ scheddb.0.start }}</td>
+          </tr>
+          <tr>
+              <td>End date</td>
+              <td>{{ scheddb.0.end }}</td>
+          </tr>
+          <tr>
+              <td>Participants</td>
+              <td>{{ scheddb.0.attendants.count }}/{{ scheddb.0.maxattendants }}</td>
+          </tr>
+      </table>
 
-   
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'trip_register_confirm' scheddb.0.id %}">[Register!]</a>
-    {% else %}
-        You need to <a href="{% url 'login' %}">log in</a> or <a href="{% url 'registration' %}">sign up</a> to register!
-    {% endif %}
+      {% if request.user.is_authenticated %}
+          <a href="{% url 'trip_register_confirm' scheddb.0.id %}" class="red-button register-button">Register</a>
+      {% else %}
+          <p class="note-text">
+            You need to <a href="{% url 'login' %}">log in</a> or 
+            <a href="{% url 'registration' %}">sign up</a> to register!
+          </p>
+      {% endif %}
 
-{% else %}
-    <h1>Can't register for this trip!</h1>
-    <h2>If you believe that it's a mistake, please <a href="{% url 'contact' %}">contact us</a>.</h2>
-{% endif %}
+  {% else %}
+      <h1 class="trip-title">Can't register for this trip!</h1>
+      <p class="note-text">
+        If you believe that it's a mistake, please 
+        <a href="{% url 'contact' %}">contact us</a>.
+      </p>
+  {% endif %}
 
-
+</div>
 {% endblock body %}
