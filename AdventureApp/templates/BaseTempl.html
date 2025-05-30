@@ -11,23 +11,22 @@
 <body>
     <nav>
         <div class="nav-container">
-            <!-- Left: Logo -->
-            <div class="nav-left">
+              <!-- Left: Logo -->
+              <div class="nav-left">
                 <a href="{% url 'main_page' %}" class="logo-link">
-                    <img src="{% static 'images/adven1.png' %}" alt="Travana" class="nav-logo">
+                  <img src="{% static 'images/newlogo.png' %}" alt="Travana" class="nav-logo">
                 </a>
-            </div>
-    
-            <!-- Center: Menu -->
-            <ul class="navbar">
+              </div>
+
+              <!-- Center: Menu -->
+              <ul class="navbar">
                 <li><a href="{% url 'main_page' %}">Home</a></li>
                 <li><a href="{% url 'view_all_trips' %}">Trips</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
                 {% if request.user.is_staff %}
                 <li><a href="{% url 'managing_panel' %}">Manage</a></li>
                 {% endif %}
-            </ul>
-    
+              </ul>
             <!-- Right: Auth -->
             <div class="nav-right">
                 {% if request.user.is_authenticated %}
