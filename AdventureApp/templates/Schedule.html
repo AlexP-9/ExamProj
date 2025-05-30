@@ -6,14 +6,16 @@ Schedule
 {% endblock title %}
 
 {% block body %}
-<h1>Schedule</h1>
+<h1 class="trip-title" style="text-align: center;">Schedule</h1>
 
+<div class="schedule-admin-wrapper">
 
-<a href="{% url 'man_schedule_add' %}">[Add new]</a>
+  <a href="{% url 'man_schedule_add' %}" class="red-button">Add New</a>
 
-<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+  <table class="schedule-admin-table">
     <caption>Active trips</caption>
-    <tr>
+    <thead>
+      <tr>
         <th>ID</th>
         <th>Name</th>
         <th>From</th>
@@ -22,35 +24,37 @@ Schedule
         <th>Guides</th>
         <th>Attendants</th>
         <th>Max. Attendants</th>
-        <th><!--*Intentionally left blank!* This column will be used for actions--></th>
-    </tr>
-    {% for s in SchedObjsActive %}
-    <tr>
-        <td>{{s.id}}</td>
-        <td>{{s.trip.title}}</td>
-        <td>{{s.start}}</td>
-        <td>{{s.end}}</td>
-        <td>{{s.price}}</td>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in SchedObjsActive %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.trip.title }}</td>
+        <td>{{ s.start }}</td>
+        <td>{{ s.end }}</td>
+        <td>{{ s.price }}</td>
         <td>
-            {% for g in s.guides.all %}
-            {{g}}; 
-            {% endfor %}
+          {% for g in s.guides.all %}
+            {{ g }}{% if not forloop.last %}; {% endif %}
+          {% endfor %}
         </td>
-        <td>{{s.attendants.count}}</td>
-        <td>{{s.maxattendants}}</td>
+        <td>{{ s.attendants.count }}</td>
+        <td>{{ s.maxattendants }}</td>
         <td>
-            <a href="{% url 'man_schedule_edit' s.id %}">[Edit]</a>
-            <a href="{% url 'man_schedule_delete' s.id %}">[Delete]</a>
+          <a href="{% url 'man_schedule_edit' s.id %}">Edit</a>
+          <a href="{% url 'man_schedule_delete' s.id %}">Delete</a>
         </td>
-    </tr>
-    {% endfor %}
-</table>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <br><br>
-
-<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+  <table class="schedule-admin-table">
     <caption>Future trips</caption>
-    <tr>
+    <thead>
+      <tr>
         <th>ID</th>
         <th>Name</th>
         <th>From</th>
@@ -59,35 +63,37 @@ Schedule
         <th>Guides</th>
         <th>Attendants</th>
         <th>Max. Attendants</th>
-        <th><!--*Intentionally left blank!* This column will be used for actions--></th>
-    </tr>  
-    {% for s in SchedObjsFuture %}
-    <tr>
-        <td>{{s.id}}</td>
-        <td>{{s.trip.title}}</td>
-        <td>{{s.start}}</td>
-        <td>{{s.end}}</td>
-        <td>{{s.price}}</td>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in SchedObjsFuture %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.trip.title }}</td>
+        <td>{{ s.start }}</td>
+        <td>{{ s.end }}</td>
+        <td>{{ s.price }}</td>
         <td>
-            {% for g in s.guides.all %}
-            {{g}}; 
-            {% endfor %}
+          {% for g in s.guides.all %}
+            {{ g }}{% if not forloop.last %}; {% endif %}
+          {% endfor %}
         </td>
-        <td>{{s.attendants.count}}</td>
-        <td>{{s.maxattendants}}</td>
+        <td>{{ s.attendants.count }}</td>
+        <td>{{ s.maxattendants }}</td>
         <td>
-            <a href="{% url 'man_schedule_edit' s.id %}">[Edit]</a>
-            <a href="{% url 'man_schedule_delete' s.id %}">[Delete]</a>
+          <a href="{% url 'man_schedule_edit' s.id %}">Edit</a>
+          <a href="{% url 'man_schedule_delete' s.id %}">Delete</a>
         </td>
-    </tr>
-    {% endfor %}
-</table>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-<br><br>
-
-<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+  <table class="schedule-admin-table">
     <caption>Past trips</caption>
-    <tr>
+    <thead>
+      <tr>
         <th>ID</th>
         <th>Name</th>
         <th>From</th>
@@ -96,28 +102,32 @@ Schedule
         <th>Guides</th>
         <th>Attendants</th>
         <th>Max. Attendants</th>
-        <th><!--*Intentionally left blank!* This column will be used for actions--></th>
-    </tr>
-    {% for s in SchedObjsPast %}
-    <tr>
-        <td>{{s.id}}</td>
-        <td>{{s.trip.title}}</td>
-        <td>{{s.start}}</td>
-        <td>{{s.end}}</td>
-        <td>{{s.price}}</td>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in SchedObjsPast %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.trip.title }}</td>
+        <td>{{ s.start }}</td>
+        <td>{{ s.end }}</td>
+        <td>{{ s.price }}</td>
         <td>
-            {% for g in s.guides.all %}
-            {{g}}; 
-            {% endfor %}
+          {% for g in s.guides.all %}
+            {{ g }}{% if not forloop.last %}; {% endif %}
+          {% endfor %}
         </td>
-        <td>{{s.attendants.count}}</td>
-        <td>{{s.maxattendants}}</td>
+        <td>{{ s.attendants.count }}</td>
+        <td>{{ s.maxattendants }}</td>
         <td>
-            <a href="{% url 'man_schedule_edit' s.id %}">[Edit]</a>
-            <a href="{% url 'man_schedule_delete' s.id %}">[Delete]</a>
+          <a href="{% url 'man_schedule_edit' s.id %}">Edit</a>
+          <a href="{% url 'man_schedule_delete' s.id %}">Delete</a>
         </td>
-    </tr>
-    {% endfor %}
-</table>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
+</div>
 {% endblock body %}
