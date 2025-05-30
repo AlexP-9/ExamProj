@@ -18,14 +18,14 @@ body {
 
 /* Optional footer polish */
 footer {
-  background-color: #eee;
+  background-color: #8f1b1b;
   padding: 10px;
   text-align: center;
 }
 
 /* ========== NAVIGATION BAR ========== */
 nav {
-    background-color: #aa2525;
+    background-color: #7d1818;
     padding: 0 24px;
     height: 60px;
     overflow: hidden;
@@ -50,7 +50,7 @@ nav {
 }
 
 .nav-logo {
-    height: 2000px;
+    height: 180px;
     max-height: 200px;
     width: auto;
     object-fit: contain;
