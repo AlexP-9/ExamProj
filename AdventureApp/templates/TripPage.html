@@ -10,18 +10,19 @@
   <h1 class="trip-title">{{ tripobj.title }}</h1>
   <p class="trip-description"><i>{{ tripobj.description }}</i></p>
 
-  <p>Closest available dates:</p>
-  {% if schedule %}
-    <ul>
-      {% for s in schedule|slice:":10" %}
-        <li><a href="{% url 'trip_register' s.id %}">{{ s.start }}</a></li>
-      {% endfor %}
-    </ul>
+  <p class="date-heading">Closest available dates:</p>
+    {% if schedule %}
+    <div class="date-links">
+        {% for s in schedule|slice:":10" %}
+        <a href="{% url 'trip_register' s.id %}" class="grey-button">{{ s.start }}</a>
+        {% endfor %}
+    </div>
     <br>
-    <a href="{% url 'trip_full_schedule' tripobj.id %}">See other available dates</a>
-  {% else %}
-    <p>(No scheduled dates so far)</p>
-  {% endif %}
+    <a href="{% url 'trip_full_schedule' tripobj.id %}" class="red-button">See other available dates</a>
+    {% else %}
+    <p style="text-align: center;">(No scheduled dates so far)</p>
+    {% endif %}
+
 </div>
 
 

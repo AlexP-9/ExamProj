@@ -6,19 +6,21 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="trip-title">Full schedule for {{ tripobj.title }}</h1>
+<div class="schedule-wrapper">
 
-<a href="{% url 'trip' tripobj.id %}">Back to the trip page</a>
+  <h1 class="trip-title">Full schedule for {{ tripobj.title }}</h1>
 
-{% if schedule %}
-    <ul>
-    {% for s in schedule %}
-        <li><a href="{% url 'trip_register' s.id %}">{{s.start}}</a><br></li>
-    {% endfor %}
+  <a href="{% url 'trip' tripobj.id %}" class="back-link">← Back to the trip page</a>
+
+  {% if schedule %}
+    <ul class="schedule-list">
+      {% for s in schedule %}
+        <li><a href="{% url 'trip_register' s.id %}">{{ s.start }}</a></li>
+      {% endfor %}
     </ul>
-{% else %}
-<p>(No scheduled dates so far)</p>
-{% endif %}
+  {% else %}
+    <p class="no-dates">(No scheduled dates so far)</p>
+  {% endif %}
 
-
+</div>
 {% endblock body %}
