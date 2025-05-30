@@ -6,45 +6,35 @@ Deleting a schedule entry
 {% endblock title %}
 
 {% block body %}
-<div class="schedule-wrapper">
-  <h1 class="trip-title">Are you sure you want to delete this schedule entry?</h1>
+<h1>Are you sure you want to delete this schedule entry?</h1>
 
-  <div class="schedule-table-box">
-    <table class="styled-schedule-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Price</th>
-          <th>Guides</th>
-          <th>Attendants</th>
-          <th>Max. Attendants</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ s.id }}</td>
-          <td>{{ s.trip.title }}</td>
-          <td>{{ s.start }}</td>
-          <td>{{ s.end }}</td>
-          <td>{{ s.price }}</td>
-          <td>
+<table class="admintable" style="border: 1px solid black; border-radius: 10px;">
+        <th>ID</th>
+        <th>Name</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Price</th>
+        <th>Guides</th>
+        <th>Attendants</th>
+        <th>Max. Attendants</th>
+    </tr>
+    <tr>
+        <td>{{s.id}}</td>
+        <td>{{s.trip.title}}</td>
+        <td>{{s.start}}</td>
+        <td>{{s.end}}</td>
+        <td>{{s.price}}</td>
+        <td>
             {% for g in s.guides.all %}
-              {{ g }}{% if not forloop.last %}; {% endif %}
+            {{g}}; 
             {% endfor %}
-          </td>
-          <td>{{ s.attendants.count }}</td>
-          <td>{{ s.maxattendants }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        </td>
+        <td>{{s.attendants.count}}</td>
+        <td>{{s.maxattendants}}</td>
+    </tr>
+</table>
 
-  <div style="margin-top: 30px;">
-    <a href="{% url 'man_schedule_delete_conf' s.id %}" class="red-button">Yes, delete it</a>
-    <a href="{% url 'manage_schedule' %}" class="grey-button" style="margin-left: 12px;">No, go back</a>
-  </div>
-</div>
+<a href="{% url 'man_schedule_delete_conf' s.id %}">[YES]</a></br>
+<a href="{% url 'manage_schedule' %}">[NO]</a>
+
 {% endblock body %}
