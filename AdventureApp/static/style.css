@@ -23,9 +23,9 @@ footer {
   text-align: center;
 }
 
-/* NAVIGATION BAR STYLES */
+/* === NAVIGATION BAR STYLES === */
 nav {
-  background-color: white; /* Remove red */
+  background-color: #f9f9f9; /* Light neutral background */
   height: 80px;
   padding: 0 32px;
   display: flex;
@@ -51,8 +51,7 @@ nav {
 
 .nav-logo {
   height: 48px;
-  width: auto;
-  object-fit: contain;
+  padding-top: 4px;
 }
 
 /* Center Nav Links */
@@ -82,10 +81,10 @@ nav {
 }
 
 .navbar a:hover {
-  background-color: #f2f2f2;
+  background-color: #eaeaea;
 }
 
-/* Right (Log in / Sign up) */
+/* Right Auth Buttons */
 .nav-right {
   display: flex;
   gap: 12px;
@@ -103,7 +102,7 @@ nav {
 }
 
 .nav-auth-link:hover {
-  background-color: #f2f2f2;
+  background-color: #eaeaea;
 }
 
 .nav-signup-button {
@@ -120,7 +119,6 @@ nav {
 .nav-signup-button:hover {
   background-color: #333;
 }
-
 
 /* ========== CONTENT WRAPPER ========== */
 .content {
