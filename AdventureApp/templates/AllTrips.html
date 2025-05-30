@@ -15,6 +15,7 @@
       {% endwith %}
       <div class="trip-card-body">
         <h3>{{ trip.title }}</h3>
+        <h4>{{ trip.difficulty }}</h4>
         <p>{{ trip.description|truncatewords:20 }}</p>
         <a href="{% url 'trip' trip.id %}">View Trip</a>
       </div>
