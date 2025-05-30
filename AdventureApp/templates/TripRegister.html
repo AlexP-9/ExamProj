@@ -37,7 +37,6 @@
       </table>
 
       {% if request.user.is_authenticated %}
-      
           <a href="{% url 'trip_register_confirm' scheddb.0.id %}" class="red-button register-button">Register</a>
       {% else %}
           <p class="note-text">
