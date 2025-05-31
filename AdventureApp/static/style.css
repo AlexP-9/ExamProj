@@ -23,99 +23,42 @@ footer {
   text-align: center;
 }
 
-/* ========== NAVIGATION BAR ========== */
-nav {
-    background-color: #7d1818;
-    padding: 0 24px;
-    height: 60px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
+/* ========== NAVBAR ========== */
 
-.nav-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1300px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-/* Left: Logo */
-.nav-left .logo-link {
-    display: flex;
-    align-items: center;
-    height: 100%;
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
 }
 
 .nav-logo {
-    height: 180px;
-    max-height: 200px;
-    width: auto;
-    object-fit: contain;
-    display: block;
+  height: auto;
+  max-height: 50px;
+  transform: scale(4.6);
+  transform-origin: left center;
 }
 
-/* Center: Navigation links */
-.navbar {
-    list-style: none;
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-    flex: 1;
+.nav-center {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  gap: 20px;
 }
 
-.navbar li {
-    display: inline;
+.nav-center .nav-link {
+  font-weight: 500;
 }
 
-.navbar a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 15px;
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.navbar a:hover {
-    text-decoration: underline;
-}
 
-/* Right: Auth buttons */
-.nav-right {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-}
 
-.nav-auth-link {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 15px;
-}
 
-.nav-auth-link:hover {
-    text-decoration: underline;
-}
-
-.nav-signup-button {
-    background-color: black;
-    color: white;
-    padding: 8px 20px;
-    border-radius: 25px;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.nav-signup-button:hover {
-    background-color: #333;
-}
 
 /* ========== CONTENT WRAPPER ========== */
 .content {
