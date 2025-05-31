@@ -7,8 +7,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
-from .forms import FormAddTrip, FormAddImages, FormAddSchedule
-from .models import Guide, Review, Schedule, Trip, TripGallery
+from .forms import FormAddTrip, FormAddImages, FormAddSchedule, ReviewForm
+from .models import Guide, Review, Schedule, Trip, TripGallery, Customer
 
 from datetime import datetime
 
@@ -40,7 +40,23 @@ def view_register(request):
     return render(request, "Register.html")
 
 def view_profile(request):
-    return render(request,"Profile.html")
+    schedactive=Schedule.objects.filter(start__lte=datetime.now(),end__gte=datetime.now(),attendants__id=request.user.id).order_by('end')
+    schedfuture=Schedule.objects.filter(start__gte=datetime.now(),attendants__id=request.user.id).order_by('start')
+
+    return render(request,"Profile.html",{
+        "schedactive":schedactive,
+        "schedfuture":schedfuture
+    })
+
+def view_trip_history(request):
+    schedactive=Schedule.objects.filter(start__lte=datetime.now(),end__gte=datetime.now(),attendants__id=request.user.id).order_by('end')
+    schedfuture=Schedule.objects.filter(start__gte=datetime.now(),attendants__id=request.user.id).order_by('start')
+    schedpast=Schedule.objects.filter(end__lte=datetime.now(),attendants__id=request.user.id).order_by('start')
+    return render(request,"ProfileTripHistory.html",{
+        "schedactive":schedactive,
+        "schedfuture":schedfuture,
+        "schedpast":schedpast
+    })
 
 """
 #Trip views (all, individual, etc.)
@@ -60,12 +76,27 @@ def view_trip(request, tid):
     picsdb=TripGallery.objects.filter(trip__id=tid)
     reviewsdb=Review.objects.filter(revtrip=tid)
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(trip__id=tid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
+    registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants=request.user.id)
+    
+    visited=Customer.objects.filter(schedules__trip=tid, schedules__end__lte=datetime.now(),id=request.user.id).exists()
+    
+    commentform=ReviewForm()
+    if request.method=="POST":
+        if(visited):
+            commentform=ReviewForm(request.POST)
+            if(commentform.is_valid()):
+                #Review
+                commentform.save()
+                messages.add_message(request,messages.SUCCESS,"Thank you for your feedback!")
     return render(request, "TripPage.html",
                   {
                       "tripobj":tripdb,
                       "picobjs":picsdb,
                       "reviews":reviewsdb,
-                      "schedule":availsched
+                      "schedule":availsched,
+                      "visited":visited,
+                      "registered":registered,
+                      "commentform":commentform
                   })
 
 def view_trip_full_schedule(request, tid):
@@ -85,6 +116,11 @@ def view_all_trips(request):
 def view_trip_register(request, sid):   #SID = Schedule ID, so that we could filter out the old and fully-booked trips
     #scheddb=Schedule.objects.filter(id=sid) #This is a workaround so that the user doesn't get a 404 error
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(id=sid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
+    
+    if(availsched[0].attendants.contains(request.user.customer)):
+        #Nope!
+        messages.add_message(request, messages.INFO, "Your are already registered for this trip!")
+        return redirect("main_page")
 
     return render(request, "TripRegister.html",{
         "scheddb":availsched
@@ -135,9 +171,9 @@ def view_add_trip(request):
 def view_schedule(request):
     scheddb=Schedule.objects.all()
     today=datetime.today().date()
-    schedpast=scheddb.filter(end__lt=today)
-    schedfuture=scheddb.filter(start__gt=today)
-    schedactive=scheddb.filter(start__lte=today, end__gte=today)
+    schedpast=scheddb.filter(end__lt=today).order_by('end')
+    schedfuture=scheddb.filter(start__gt=today).order_by('start')
+    schedactive=scheddb.filter(start__lte=today, end__gte=today).order_by('start')
     return render(request,"Schedule.html",{
         "SchedObjsPast":schedpast,
         "SchedObjsFuture":schedfuture,
