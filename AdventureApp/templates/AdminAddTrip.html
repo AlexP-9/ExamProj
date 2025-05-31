@@ -1,42 +1,64 @@
 {% extends "BaseTempl.html" %}
+{% load static %}
 
 {% block title %}
-Add a new trip
-{% endblock title %}
+Add New Trip
+{% endblock %}
+
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  input, textarea, select {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+</style>
+{% endblock headextra %}
 
 {% block body %}
-<div class="auth-title">
-    <h1>Add a new trip</h1>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white fw-bold text-center">
+          Add New Trip
+        </div>
+        <div class="card-body">
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Title</label>
+              {{ FormTrip.title }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              {{ FormTrip.description }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Tags</label>
+              {{ FormTrip.tags }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Difficulty</label>
+              {{ FormTrip.difficulty }}
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Media Files</label>
+              {{ FormIm.picture }}
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100">Add New Trip</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="auth-container">
-    <form method="post" class ="auth-form">
-        {% csrf_token %}
-
-        <label>Title</label><br>
-        {{FormTrip.title}}
-        <br><br>
-
-        <label>Description</label><br>
-        {{FormTrip.description}}
-        <br><br>
-
-        <label>Tags</label><br>
-        {{FormTrip.tags}}
-        <br><br>
-
-        <label>Difficulty</label><br>
-        {{FormTrip.difficulty}}
-        <br><br>
-
-        <label>Mediafiles</label><br>
-        <!--{{FormIm.picture.label_tag}}-->
-        {{FormIm.picture}}
-        <br><br>
-
-        <input type="submit" value="Add a new trip">
-    </form>
-</div>
-
-
 {% endblock body %}

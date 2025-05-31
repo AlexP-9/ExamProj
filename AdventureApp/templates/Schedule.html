@@ -5,129 +5,146 @@
 Schedule
 {% endblock title %}
 
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
+
 {% block body %}
-<h1 class="trip-title" style="text-align: center;">Schedule</h1>
+<div class="container py-5">
+  <h1 class="text-center mb-5"><u>Schedule</u></h1>
 
-<div class="schedule-admin-wrapper">
+  <div class="d-flex justify-content-center mb-4">
+    <a href="{% url 'man_schedule_add' %}" class="btn btn-danger">Add New</a>
+  </div>
 
-  <a href="{% url 'man_schedule_add' %}" class="red-button">Add New</a>
-
-  <table class="schedule-admin-table">
-    <caption>Active trips</caption>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Price</th>
-        <th>Guides</th>
-        <th>Attendants</th>
-        <th>Max. Attendants</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for s in SchedObjsActive %}
-      <tr>
-        <td>{{ s.id }}</td>
-        <td>{{ s.trip.title }}</td>
-        <td>{{ s.start }}</td>
-        <td>{{ s.end }}</td>
-        <td>{{ s.price }}</td>
-        <td>
-          {% for g in s.guides.all %}
-            {{ g }}{% if not forloop.last %}; {% endif %}
+  <div class="mb-5">
+    <h4 class="mb-3">Active Trips</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Price</th>
+            <th>Guides</th>
+            <th>Attendants</th>
+            <th>Max Attendants</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in SchedObjsActive %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.trip.title }}</td>
+            <td>{{ s.start }}</td>
+            <td>{{ s.end }}</td>
+            <td>{{ s.price }}</td>
+            <td>
+              {% for g in s.guides.all %}
+                {{ g }}{% if not forloop.last %}; {% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ s.attendants.count }}</td>
+            <td>{{ s.maxattendants }}</td>
+            <td>
+              <a href="{% url 'man_schedule_edit' s.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+              <a href="{% url 'man_schedule_delete' s.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+          </tr>
           {% endfor %}
-        </td>
-        <td>{{ s.attendants.count }}</td>
-        <td>{{ s.maxattendants }}</td>
-        <td>
-          <a href="{% url 'man_schedule_edit' s.id %}">Edit</a>
-          <a href="{% url 'man_schedule_delete' s.id %}">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <table class="schedule-admin-table">
-    <caption>Future trips</caption>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Price</th>
-        <th>Guides</th>
-        <th>Attendants</th>
-        <th>Max. Attendants</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for s in SchedObjsFuture %}
-      <tr>
-        <td>{{ s.id }}</td>
-        <td>{{ s.trip.title }}</td>
-        <td>{{ s.start }}</td>
-        <td>{{ s.end }}</td>
-        <td>{{ s.price }}</td>
-        <td>
-          {% for g in s.guides.all %}
-            {{ g }}{% if not forloop.last %}; {% endif %}
+  <div class="mb-5">
+    <h4 class="mb-3">Future Trips</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-info">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Price</th>
+            <th>Guides</th>
+            <th>Attendants</th>
+            <th>Max Attendants</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in SchedObjsFuture %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.trip.title }}</td>
+            <td>{{ s.start }}</td>
+            <td>{{ s.end }}</td>
+            <td>{{ s.price }}</td>
+            <td>
+              {% for g in s.guides.all %}
+                {{ g }}{% if not forloop.last %}; {% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ s.attendants.count }}</td>
+            <td>{{ s.maxattendants }}</td>
+            <td>
+              <a href="{% url 'man_schedule_edit' s.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+              <a href="{% url 'man_schedule_delete' s.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+          </tr>
           {% endfor %}
-        </td>
-        <td>{{ s.attendants.count }}</td>
-        <td>{{ s.maxattendants }}</td>
-        <td>
-          <a href="{% url 'man_schedule_edit' s.id %}">Edit</a>
-          <a href="{% url 'man_schedule_delete' s.id %}">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <table class="schedule-admin-table">
-    <caption>Past trips</caption>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Price</th>
-        <th>Guides</th>
-        <th>Attendants</th>
-        <th>Max. Attendants</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for s in SchedObjsPast %}
-      <tr>
-        <td>{{ s.id }}</td>
-        <td>{{ s.trip.title }}</td>
-        <td>{{ s.start }}</td>
-        <td>{{ s.end }}</td>
-        <td>{{ s.price }}</td>
-        <td>
-          {% for g in s.guides.all %}
-            {{ g }}{% if not forloop.last %}; {% endif %}
+  <div class="mb-5">
+    <h4 class="mb-3">Past Trips</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-secondary">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Price</th>
+            <th>Guides</th>
+            <th>Attendants</th>
+            <th>Max Attendants</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in SchedObjsPast %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.trip.title }}</td>
+            <td>{{ s.start }}</td>
+            <td>{{ s.end }}</td>
+            <td>{{ s.price }}</td>
+            <td>
+              {% for g in s.guides.all %}
+                {{ g }}{% if not forloop.last %}; {% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ s.attendants.count }}</td>
+            <td>{{ s.maxattendants }}</td>
+            <td>
+              <a href="{% url 'man_schedule_edit' s.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+              <a href="{% url 'man_schedule_delete' s.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+          </tr>
           {% endfor %}
-        </td>
-        <td>{{ s.attendants.count }}</td>
-        <td>{{ s.maxattendants }}</td>
-        <td>
-          <a href="{% url 'man_schedule_edit' s.id %}">Edit</a>
-          <a href="{% url 'man_schedule_delete' s.id %}">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 </div>
 {% endblock body %}
