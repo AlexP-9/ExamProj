@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
-from .models import Schedule, Trip, TripGallery, Customer, Review
+from .models import Schedule, Trip, TripGallery, Customer
 
 #https://stackoverflow.com/questions/77212709/django-clearablefileinput-does-not-support-uploading-multiple-files-error
 
@@ -77,9 +77,3 @@ class FormRegister(forms.ModelForm):
     class Meta:
         model=Customer
         exclude=[]
-
-
-class ReviewForm(forms.ModelForm):
-    class Meta:
-        model=Review
-        exclude=["date_created","date_edited","customer","revtrip"]

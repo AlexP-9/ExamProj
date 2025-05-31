@@ -27,7 +27,6 @@ urlpatterns = [
     path("trips/register/<int:sid>/confirm", views.view_trip_register_confirm, name="trip_register_confirm"),
 
     path("profile/",views.view_profile,name="profile"),
-    path("profile/history/",views.view_trip_history,name="trip_history"),
 
     path("about/",views.view_about,name="about"),
     path("contact/",views.view_contact,name="contact"),
