@@ -11,6 +11,7 @@
   <p class="trip-description"><i>{{ tripobj.description }}</i></p>
 
   <p class="date-heading">Closest available dates:</p>
+   {{registered}}
     {% if schedule %}
     <div class="date-links">
         {% for s in schedule|slice:":10" %}
@@ -51,6 +52,15 @@
 
 <!-- Reviews -->
 <h3 style="text-align: center;"><u>Reviews</u></h3>
+
+{% if visited %}
+<form method="post">
+    {% csrf_token %}
+    {{ commentform }}
+    <button type="sumbit">Comment</button>
+</form>
+{% endif %}
+
 <div class="reviews-container">
   {% for r in reviews %}
     <div class="review-card">
