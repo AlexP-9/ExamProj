@@ -2,16 +2,20 @@
 {% load static %}
 
 {% block title %}
-Deleting a schedule entry
+Deleting a Schedule Entry
 {% endblock title %}
 
-{% block body %}
-<div class="schedule-wrapper">
-  <h1 class="trip-title">Are you sure you want to delete this schedule entry?</h1>
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
 
-  <div class="schedule-table-box">
-    <table class="styled-schedule-table">
-      <thead>
+{% block body %}
+<div class="container py-5">
+  <h1 class="text-center mb-5 text-danger">Are You Sure You Want to Delete This Schedule Entry?</h1>
+
+  <div class="table-responsive mb-4">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-danger">
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -42,9 +46,9 @@ Deleting a schedule entry
     </table>
   </div>
 
-  <div style="margin-top: 30px;">
-    <a href="{% url 'man_schedule_delete_conf' s.id %}" class="red-button">Yes, delete it</a>
-    <a href="{% url 'manage_schedule' %}" class="grey-button" style="margin-left: 12px;">No, go back</a>
+  <div class="d-flex justify-content-center gap-3">
+    <a href="{% url 'man_schedule_delete_conf' s.id %}" class="btn btn-danger">Yes, delete it</a>
+    <a href="{% url 'manage_schedule' %}" class="btn btn-outline-secondary">No, go back</a>
   </div>
 </div>
 {% endblock body %}

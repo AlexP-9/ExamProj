@@ -71,7 +71,7 @@ class Schedule(models.Model):
     end=models.DateTimeField()
     price=models.DecimalField(max_digits=12,decimal_places=2)
     maxattendants=models.IntegerField()
-    attendants=models.ManyToManyField(Customer, blank=True)
+    attendants=models.ManyToManyField(Customer, blank=True, related_name="schedules")
     guides=models.ManyToManyField(Guide)
 
     class Meta:

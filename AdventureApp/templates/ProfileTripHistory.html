@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Schedule
+Trip History
 {% endblock title %}
 
 {% block headextra %}
@@ -11,33 +11,27 @@ Schedule
 
 {% block body %}
 <div class="container py-5">
-  <h1 class="text-center mb-5"><u>Schedule</u></h1>
+  <h1 class="text-center mb-5"><u>Trip History</u></h1>
 
-  <div class="d-flex justify-content-center mb-4">
-    <a href="{% url 'man_schedule_add' %}" class="btn btn-danger">Add New</a>
-  </div>
-
+  {% if schedactive %}
   <div class="mb-5">
     <h4 class="mb-3">Active Trips</h4>
     <div class="table-responsive">
       <table class="table table-bordered table-hover align-middle">
-        <thead class="table-primary">
+        <thead class="table-success">
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>From</th>
             <th>To</th>
             <th>Price</th>
             <th>Guides</th>
             <th>Attendants</th>
-            <th>Max Attendants</th>
-            <th>Actions</th>
+            <th>Max. Attendants</th>
           </tr>
         </thead>
         <tbody>
-          {% for s in SchedObjsActive %}
+          {% for s in schedactive %}
           <tr>
-            <td>{{ s.id }}</td>
             <td>{{ s.trip.title }}</td>
             <td>{{ s.start }}</td>
             <td>{{ s.end }}</td>
@@ -49,38 +43,33 @@ Schedule
             </td>
             <td>{{ s.attendants.count }}</td>
             <td>{{ s.maxattendants }}</td>
-            <td>
-              <a href="{% url 'man_schedule_edit' s.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-              <a href="{% url 'man_schedule_delete' s.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
-            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+  {% endif %}
 
+  {% if schedfuture %}
   <div class="mb-5">
     <h4 class="mb-3">Future Trips</h4>
     <div class="table-responsive">
       <table class="table table-bordered table-hover align-middle">
         <thead class="table-info">
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>From</th>
             <th>To</th>
             <th>Price</th>
             <th>Guides</th>
             <th>Attendants</th>
-            <th>Max Attendants</th>
-            <th>Actions</th>
+            <th>Max. Attendants</th>
           </tr>
         </thead>
         <tbody>
-          {% for s in SchedObjsFuture %}
+          {% for s in schedfuture %}
           <tr>
-            <td>{{ s.id }}</td>
             <td>{{ s.trip.title }}</td>
             <td>{{ s.start }}</td>
             <td>{{ s.end }}</td>
@@ -92,38 +81,33 @@ Schedule
             </td>
             <td>{{ s.attendants.count }}</td>
             <td>{{ s.maxattendants }}</td>
-            <td>
-              <a href="{% url 'man_schedule_edit' s.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-              <a href="{% url 'man_schedule_delete' s.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
-            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+  {% endif %}
 
+  {% if schedpast %}
   <div class="mb-5">
     <h4 class="mb-3">Past Trips</h4>
     <div class="table-responsive">
       <table class="table table-bordered table-hover align-middle">
         <thead class="table-secondary">
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>From</th>
             <th>To</th>
             <th>Price</th>
             <th>Guides</th>
             <th>Attendants</th>
-            <th>Max Attendants</th>
-            <th>Actions</th>
+            <th>Max. Attendants</th>
           </tr>
         </thead>
         <tbody>
-          {% for s in SchedObjsPast %}
+          {% for s in schedpast %}
           <tr>
-            <td>{{ s.id }}</td>
             <td>{{ s.trip.title }}</td>
             <td>{{ s.start }}</td>
             <td>{{ s.end }}</td>
@@ -135,16 +119,12 @@ Schedule
             </td>
             <td>{{ s.attendants.count }}</td>
             <td>{{ s.maxattendants }}</td>
-            <td>
-              <a href="{% url 'man_schedule_edit' s.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-              <a href="{% url 'man_schedule_delete' s.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
-            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
-
+  {% endif %}
 </div>
 {% endblock body %}

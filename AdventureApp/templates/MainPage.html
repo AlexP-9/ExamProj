@@ -1,4 +1,5 @@
 {% extends "BaseTempl.html" %}
+{% load static %}
 
 {% block title %}
 Home
@@ -29,6 +30,44 @@ Home
         {% endfor %}
     </div>
 </div>
+
+
+<!-- Featurette Section Below the Trip Gallery -->
+<hr class="featurette-divider">
+
+<div class="row featurette">
+  <div class="col-md-7">
+    <h2 class="featurette-heading fw-normal lh-1">
+      Discover Your Next Adventure. <span class="text-body-secondary">Unveil New Destinations.</span>
+    </h2>
+    <p class="lead">Explore the beauty of untouched landscapes, historic cities, and vibrant cultures. Each adventure awaits you!</p>
+  </div>
+  <div class="col-md-5">
+    <img src="{% static 'images/grp.jpg' %}" class="featurette-image img-fluid mx-auto" alt="Adventure Travel">
+  </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="row featurette">
+  <div class="col-md-5">
+    <img src="{% static 'images/spain6.jpg' %}" class="featurette-image img-fluid mx-auto" alt="Adventure Travel">
+  </div>
+  <div class="col-md-7">
+    <h2 class="featurette-heading fw-normal lh-1">
+      Oh yeah, it’s that good. <span class="text-body-secondary">See for yourself.</span>
+    </h2>
+    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
+  </div>
+</div>
+
+<hr class="featurette-divider">
+
+
+
+
+
+
 
 <!-- Newsletter Sign-up Section -->
 <section class="newsletter-section">
