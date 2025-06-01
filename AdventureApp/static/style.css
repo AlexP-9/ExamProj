@@ -323,6 +323,8 @@ h1.fw-bold {
 }
 
 
+
+
 /* ========== ADMIN TABLE ========== */
 .admintable tr td {
     border: 1px solid black;
@@ -372,7 +374,7 @@ h1.fw-bold {
 
 /* ========== CTA TRAVEL SPECIALISTS ========== */
 .cta-specialists-section {
-    background-color: #e60000;
+    background-color: #308da9;
     color: white;
     text-align: center;
     padding: 60px 20px;
