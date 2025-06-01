@@ -58,6 +58,10 @@ header {
 
 
 
+.carousel-slide-adjusted {
+  margin-top: -180px;
+}
+
 
 
 /* ========== FEATURETTE SECTION ========== */
@@ -725,7 +729,6 @@ form p textarea:focus {
 .btn-danger {
   font-weight: 600;
 }
-
 
 
 
