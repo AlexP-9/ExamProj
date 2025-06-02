@@ -3,6 +3,9 @@ Login   Password
 Admins:
 a   nonblankpassword
 
-Customers:
-SampleCustomer  qaxqaxqax
-SampleCustomer2  qaxqaxqax2
+Customers: (all passwords are nonblankpassword)
+Usernamus
+funboy97
+SpiderMan
+Birdie
+themcb
