@@ -7,12 +7,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
-from .forms import FormAddTrip, FormAddImages, FormAddSchedule, ReviewForm
+from .forms import ReviewForm, FormRegister
 from .models import Guide, Review, Schedule, Trip, TripGallery, Customer
 
 from datetime import datetime
 
 # Create your views here.
+
 """
 #Registration, Login, Logout
 """
@@ -23,27 +24,48 @@ def view_login(request):
         user=authenticate(request,username=uname,password=passw)
         if user:    #if user is not None:
             login(request,user)
+            next=request.GET.get("next","")
+            if(next):
+                return redirect(next)
             return redirect("main_page")
-            #return redirect(request.GET.get("next",""))
         messages.add_message(request, messages.WARNING, "Incorrect password!")
-        return render(request,"LogIn.html",{
+        return render(request,"Accounts/LogIn.html",{
             "username":uname            
         })
-    return render(request, "LogIn.html")
+    return render(request, "Accounts/LogIn.html")
 
 def view_logout(request):
     logout(request)
+    next=request.GET.get("next","")
+    if(next):
+        return redirect(next)
     return redirect("main_page")
 
 def view_register(request):
-    
-    return render(request, "Register.html")
+    regform=FormRegister()
+    if(request.method=="POST"):
+        regform=FormRegister(request.POST)
+        if(regform.is_valid()):
+            regform.save()
+            authuser=authenticate(request,username=regform.cleaned_data["username"],password=regform.cleaned_data["password1"])
+            login(request,authuser)
+            customer=Customer(user=authuser,
+                              phone=regform.cleaned_data["phone"],
+                              newsletter=regform.cleaned_data["newsletter"])
+            customer.save()
+            next=request.GET.get("next","")
+            if(next):
+                return redirect(next)
+            return redirect("main_page")
+    return render(request, "Accounts/Register.html",{
+        "regform":regform
+    })
 
 def view_profile(request):
     schedactive=Schedule.objects.filter(start__lte=datetime.now(),end__gte=datetime.now(),attendants__id=request.user.id).order_by('end')
     schedfuture=Schedule.objects.filter(start__gte=datetime.now(),attendants__id=request.user.id).order_by('start')
 
-    return render(request,"Profile.html",{
+    return render(request,"Accounts/Profile.html",{
         "schedactive":schedactive,
         "schedfuture":schedfuture
     })
@@ -52,7 +74,7 @@ def view_trip_history(request):
     schedactive=Schedule.objects.filter(start__lte=datetime.now(),end__gte=datetime.now(),attendants__id=request.user.id).order_by('end')
     schedfuture=Schedule.objects.filter(start__gte=datetime.now(),attendants__id=request.user.id).order_by('start')
     schedpast=Schedule.objects.filter(end__lte=datetime.now(),attendants__id=request.user.id).order_by('start')
-    return render(request,"ProfileTripHistory.html",{
+    return render(request,"Accounts/ProfileTripHistory.html",{
         "schedactive":schedactive,
         "schedfuture":schedfuture,
         "schedpast":schedpast
@@ -76,7 +98,7 @@ def view_trip(request, tid):
     picsdb=TripGallery.objects.filter(trip__id=tid)
     reviewsdb=Review.objects.filter(revtrip=tid)
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(trip__id=tid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
-    registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants=request.user.id)
+    registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants__id=request.user.customer.id)
     
     visited=Customer.objects.filter(schedules__trip=tid, schedules__end__lte=datetime.now(),id=request.user.id).exists()
     
@@ -88,7 +110,7 @@ def view_trip(request, tid):
                 #Review
                 commentform.save()
                 messages.add_message(request,messages.SUCCESS,"Thank you for your feedback!")
-    return render(request, "TripPage.html",
+    return render(request, "Trips/TripPage.html",
                   {
                       "tripobj":tripdb,
                       "picobjs":picsdb,
@@ -102,14 +124,14 @@ def view_trip(request, tid):
 def view_trip_full_schedule(request, tid):
     tripdb=get_object_or_404(Trip,id=tid)
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(trip__id=tid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
-    return render(request, "TripFullSchedule.html",{
+    return render(request, "Trips/TripFullSchedule.html",{
         "tripobj":tripdb,
         "schedule":availsched
     })
 
 def view_all_trips(request):
     all_trips = Trip.objects.all()
-    return render(request, "AllTrips.html", {
+    return render(request, "Trips/AllTrips.html", {
         "trips": all_trips
     })
 
@@ -122,7 +144,7 @@ def view_trip_register(request, sid):   #SID = Schedule ID, so that we could fil
         messages.add_message(request, messages.INFO, "Your are already registered for this trip!")
         return redirect("main_page")
 
-    return render(request, "TripRegister.html",{
+    return render(request, "Trips/TripRegister.html",{
         "scheddb":availsched
     })
 
@@ -131,138 +153,35 @@ def view_trip_register_confirm(request, sid):
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(id=sid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
     if(not availsched):
         #Nope!
-        return render(request, "TripRegister.html",
+        return render(request, "Trips/TripRegister.html",
                       {"scheddb":None})
     if(availsched[0].attendants.contains(request.user.customer)):
         #Nope!
-        messages.add_message(request, messages.INFO, "Your are already registered for this trip!")
+        messages.add_message(request, messages.INFO, "You are already registered for this trip!")
         return redirect("main_page")
     availsched[0].attendants.add(request.user.customer)
     availsched[0].save()
     messages.add_message(request, messages.SUCCESS, "Successfully registered for the trip!")
     return redirect("main_page")
 
-"""
-#Administrational views
-"""
-@staff_member_required
-def view_managing_panel(request):
-    return render(request,"ManagingPanel.html")
 
-@staff_member_required
-def view_add_trip(request):
-    formtrip=FormAddTrip()
-    formim=FormAddImages()
-    if(request.method=="POST"):
-        formtrip=FormAddTrip()
-        formim=FormAddImages()
-        uplimages=request.FILES.getlist("picture")
-        print("Post")
-        print(request.FILES)
-        for i in uplimages:
-            print(i)
-    
-    return render(request,"AdminAddTrip.html",{
-        "FormTrip":formtrip,
-        "FormIm":formim
-    })
-
-@staff_member_required
-def view_schedule(request):
-    scheddb=Schedule.objects.all()
-    today=datetime.today().date()
-    schedpast=scheddb.filter(end__lt=today).order_by('end')
-    schedfuture=scheddb.filter(start__gt=today).order_by('start')
-    schedactive=scheddb.filter(start__lte=today, end__gte=today).order_by('start')
-    return render(request,"Schedule.html",{
-        "SchedObjsPast":schedpast,
-        "SchedObjsFuture":schedfuture,
-        "SchedObjsActive":schedactive,
-    })
-
-@staff_member_required
-def view_schedule_add(request):
-    if(request.method=="POST"):
-        formsched=FormAddSchedule(request.POST)
-        if(formsched.is_valid()):
-            #Check if we have overlaps
-            #If there are different guides assigned, then, of course,
-            #the schedules may overlap
-            cleandata=formsched.cleaned_data
-            overlaps=set(Schedule.objects.filter(
-                    start__lte=cleandata["end"],
-                    end__gte=cleandata["start"],
-                    guides__in=cleandata["guides"]
-                ))
-            if(len(overlaps)==0):
-                formsched.save()
-                messages.add_message(request, messages.INFO, "Successfully added a new advenure!")
-                return redirect("manage_schedule")
-
-            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))       
-    else:
-        formsched=FormAddSchedule()
-    return render(request,"ScheduleAdd.html",{
-        "FormSched":formsched
-    })
-
-@staff_member_required
-def view_schedule_edit(request, sched_id):
-    sched=get_object_or_404(Schedule, id=sched_id)
-    if(request.method=="POST"):
-        formsched=FormAddSchedule(request.POST, instance=sched)
-        if(formsched.is_valid()):
-            #Check if we have overlaps
-            #If there are different guides assigned, then, of course,
-            #the schedules may overlap
-            cleandata=formsched.cleaned_data
-            overlaps=set(Schedule.objects.filter(
-                    start__lte=cleandata["end"],
-                    end__gte=cleandata["start"],
-                    guides__in=cleandata["guides"]
-                ).exclude(id=sched_id))
-            if(len(overlaps)==0):
-                formsched.save()
-                messages.add_message(request, messages.INFO, "Changes saved successfully!")
-                return redirect("manage_schedule")   
-            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))
-    else:
-        formsched=FormAddSchedule(instance=sched)
-    return render(request,"ScheduleAdd.html",{
-        "ScheduleEdit":True,
-        "FormSched":formsched
-    })
-
-@staff_member_required
-def view_schedule_delete(request, sched_id):
-    schedobj=get_object_or_404(Schedule, id=sched_id)
-    """
-    if(request.method=="DELETE"):
-        messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
-        return redirect("manage_schedule")  
-    """
-    return render(request, "ScheduleDelete.html",{
-        "s":schedobj,
-    })
-
-@staff_member_required
-def view_schedule_delete_conf(request, sched_id):
-    schedobj=get_object_or_404(Schedule, id=sched_id)
-    schedobj.delete()
-    messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
-    return redirect("manage_schedule")  
 
 """
 #Debug
 """
 def view_debug(request):
+    r=request.GET.get("next","")
+    print("++++")
+    print(r)
+    if(r):
+        print("ifr")
+    print("++++")
     return render(request,"Debug.html")
 
 
 """
 #Misc. stuff
 """
-
 def view_about(request):
     guidesdb=Guide.objects.all
     return render(request, "About.html",

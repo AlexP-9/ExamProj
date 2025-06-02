@@ -4,14 +4,18 @@ from django.contrib.auth.models import User, AbstractUser
 
 # Create your models here.
 
-class Customer(User):
+class Customer(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    #fullname=models.CharField(max_length=255)
     phone=models.CharField(
         max_length=32,
         validators=[
-            RegexValidator(regex="^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+            RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
                            message="Invalid phone number format!")
         ])
     newsletter=models.BooleanField()
+    def __str__(self):
+        return(f"{self.user.first_name} {self.user.last_name} ({self.user.username})")
     class Meta:
     	verbose_name_plural="Customers"
 
@@ -57,7 +61,7 @@ class Guide(models.Model):
     phone=models.CharField(
         max_length=32,
         validators=[
-            RegexValidator(regex="^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+            RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
                            message="Invalid phone number format!")                   
         ]
         )
@@ -71,7 +75,8 @@ class Schedule(models.Model):
     end=models.DateTimeField()
     price=models.DecimalField(max_digits=12,decimal_places=2)
     maxattendants=models.IntegerField()
-    attendants=models.ManyToManyField(Customer, blank=True, related_name="schedules")
+    #attendants=models.ManyToManyField(Customer, blank=True, related_name="schedules")
+    attendants=models.ManyToManyField(User, blank=True, related_name="schedules")
     guides=models.ManyToManyField(Guide)
 
     class Meta:
@@ -90,7 +95,8 @@ class Schedule(models.Model):
         
 
 class Review(models.Model):
-    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    #customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    customer=models.ForeignKey(User,on_delete=models.CASCADE)
     revtrip=models.ForeignKey(Trip, null=True, on_delete=models.SET_NULL)
     #^Should this be able to be NULL?^
     rating=models.IntegerField(validators=[

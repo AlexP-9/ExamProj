@@ -1,0 +1,17 @@
+{% extends "BaseTempl.html" %}
+
+{% block title %}
+Administrational panel
+{% endblock title %}
+
+{% block body %}
+<h1>Administrational panel</h1>
+
+<p><a href="{% url 'manage_schedule' %}">Manage schedule</a></p>
+
+<p><a href="{% url 'manage_trips' %}">Manage trips</a></p>
+
+<p><a href="{% url 'manage_guides' %}">Manage guides</a></p>
+
+
+{% endblock body %}

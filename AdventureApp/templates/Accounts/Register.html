@@ -1,0 +1,74 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+Registration
+{% endblock title %}
+
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
+
+{% block body %}
+<div class="d-flex align-items-center justify-content-center vh-100 bg-light">
+  <main class="form-signin w-100" style="max-width: 400px;">
+    <form method="post">
+      {% csrf_token %}
+      <div class="text-center mb-4">
+        <img class="mb-2" src="{% static 'images/adven1.png' %}" alt="Logo" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Create an Account</h1>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Username" value="{% if regform.username.value %}{{regform.username.value}}{% endif %}" required>
+        <label for="floatingUsername">Username</label>
+        {{ regform.errors.username }}
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" name="first_name" class="form-control" id="floatingUsername" placeholder="First name" value="{% if regform.first_name.value %}{{regform.first_name.value}}{% endif %}" required>
+        <label for="floatingUsername">First name</label>
+        {{ regform.errors.first_name }}
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" name="last_name" class="form-control" id="floatingUsername" placeholder="Last name" value="{% if regform.last_name.value %}{{regform.last_name.value}}{% endif %}" required>
+        <label for="floatingUsername">Last name</label>
+        {{ regform.errors.last_name }}
+      </div>
+    
+      <div class="form-floating mb-3">
+        <input type="tel" name="phone" pattern="^\+?1?\d{9,15}$" class="form-control" id="floatingPhone" placeholder="Phone" value="{% if regform.phone.value %}{{regform.phone.value}}{% endif %}" required>
+        <label for="floatingPhone">Phone number (e.g. +4712345678)</label>
+        {{ regform.errors.phone }}
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="password" name="password1" class="form-control" id="floatingPassword" placeholder="Password" autocomplete="off" value="{% if regform.password1.value %}{{regform.password1.value}}{% endif %}" required>
+        <label for="floatingPassword">Password</label>
+        {{ regform.errors.password1 }}
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="password" name="password2" class="form-control" id="floatingPasswordRepeat" placeholder="Repeat Password" value="{% if regform.password2.value %}{{regform.password2.value}}{% endif %}" autocomplete="off" required>
+        <label for="floatingPasswordRepeat">Repeat password</label>
+        {{ regform.errors.password2 }}
+      </div>
+
+      <div class="form-check mb-3 text-start">
+        <input type="checkbox" class="form-check-input" id="newsletterCheck" {% if regform.newsletter.value %}checked{% endif %} name="newsletter">
+        <label class="form-check-label" for="newsletterCheck">
+          I want to subscribe to the newsletter
+        </label>
+        {{ regform.errors.newsletter }}
+      </div>
+
+      <button class="btn btn-danger w-100 py-2" type="submit">Register!</button>
+
+      <p class="mt-4 text-center text-muted">&copy; 2025 Adventure Travelers</p>
+    </form>
+  </main>
+</div>
+
+
+{% endblock body %}

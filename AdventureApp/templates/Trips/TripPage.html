@@ -1,0 +1,85 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+  {{ tripobj.title }}
+{% endblock %}
+
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+  <!-- Trip Header -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold display-1" style="font-size: 5rem;">{{ tripobj.title }}</h1>
+    <p class="lead fst-italic">{{ tripobj.description }}</p>
+  </div>
+
+
+  <!-- Dates Section -->
+  <div class="text-center mb-4">
+    <h5 class="fw-semibold mb-3">Closest available dates:</h5>
+
+
+  {% if registered %}
+    <p class="text-success">You are already registered for this trip.</p>
+  {% endif %}
+
+  {% if schedule %}
+      <div class="d-flex flex-column align-items-center gap-2 mb-3">
+        {% for s in schedule|slice:":10" %}
+          <a href="{% url 'trip_register' s.id %}" class="btn btn-outline-dark px-4">{{ s.start }}</a>
+        {% endfor %}
+      </div>
+      <a href="{% url 'trip_full_schedule' tripobj.id %}" class="btn btn-danger px-4">See other available dates</a>
+    {% else %}
+      <p class="text-muted">(No scheduled dates so far)</p>
+    {% endif %}
+  </div>
+
+  <!-- Image Gallery -->
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
+    {% for p in picobjs %}
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+          <label for="popup-toggle-{{ forloop.counter }}">
+            <img src="{{ p.picture.url }}" class="card-img-top" alt="Trip image">
+          </label>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Reviews Section -->
+  <h3 class="text-center mb-4 fw-bold"><u>Reviews</u></h3>
+
+  {% if visited %}
+    <div class="mb-4">
+      <form method="post" class="mx-auto" style="max-width: 600px;">
+        {% csrf_token %}
+        {{ commentform }}
+        <button type="submit" class="btn btn-danger mt-2">Comment</button>
+      </form>
+    </div>
+  {% endif %}
+
+  <div class="d-flex flex-column align-items-center">
+    {% for r in reviews %}
+      <div class="card mb-3 shadow-sm" style="max-width: 600px; width: 100%;">
+        <div class="card-body">
+          <div class="fw-bold text-primary mb-1">{{ r.rating }}/10</div>
+          <div class="fst-italic text-secondary mb-1">"{{ r.revtitle }}"</div>
+          <div class="text-muted small mb-2">{{ r.customer }} at {{ r.date_created }}</div>
+          <div class="text-dark">{{ r.comment }}</div>
+        </div>
+      </div>
+    {% empty %}
+      <p>There are no reviews.</p>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock body %}

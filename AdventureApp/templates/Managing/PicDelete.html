@@ -1,0 +1,23 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+Deleting a picture
+{% endblock title %}
+
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
+
+{% block body %}
+<div class="container py-5">
+  <h1 class="text-center mb-5 text-danger">Are You Sure You Want to Delete This Picture?</h1>
+
+  <img src="{{picobj.picture.url}}" alt="ID_{{picobj.id}}"" class="specialist">
+
+  <div class="d-flex justify-content-center gap-3">
+    <a href="{% url 'man_pic_delete_confirm' picobj.id %}?next={{next}}" class="btn btn-danger">Yes, I want to delete this picture</a>
+    <a href="{{next}}" class="btn btn-outline-secondary">No, go back</a>
+  </div>
+</div>
+{% endblock body %}

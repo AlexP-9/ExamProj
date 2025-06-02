@@ -1,0 +1,45 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+  {{ tripobj.title }}
+{% endblock %}
+
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="bg-white rounded shadow-sm p-4 mx-auto" style="max-width: 600px;">
+
+    <!-- Trip Title -->
+    <h1 class="h4 fw-bold mb-3 text-center">
+      Full schedule for {{ tripobj.title }}
+    </h1>
+
+    <!-- Back Link -->
+    <div class="text-center mb-4">
+      <a href="{% url 'trip' tripobj.id %}" class="text-decoration-none fw-semibold text-primary">
+        ← Back to the trip page
+      </a>
+    </div>
+
+    <!-- Dates List -->
+    {% if schedule %}
+      <ul class="list-unstyled text-center">
+        {% for s in schedule %}
+          <li class="mb-2">
+            <a href="{% url 'trip_register' s.id %}" class="btn btn-outline-danger">
+              {{ s.start }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted fst-italic text-center">(No scheduled dates so far)</p>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock body %}

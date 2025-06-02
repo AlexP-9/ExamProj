@@ -1,34 +1,21 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
+from django.db import models
 from django.forms import ClearableFileInput
-from .models import Schedule, Trip, TripGallery, Customer, Review
+from .models import Schedule, Trip, TripGallery, Customer, Review, Guide
 
 #https://stackoverflow.com/questions/77212709/django-clearablefileinput-does-not-support-uploading-multiple-files-error
 
-class MultipleFileInput(forms.ClearableFileInput):
-    allow_multiple_selected = True
-
-class MultipleFileField(forms.FileField):
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("widget", MultipleFileInput())
-        super().__init__(*args, **kwargs)
-
-    def clean(self, data, initial=None):
-        single_file_clean = super().clean
-        if isinstance(data, (list, tuple)):
-            result = [single_file_clean(d, initial) for d in data]
-        else:
-            result = single_file_clean(data, initial)
-        return result
 
 class FormAddTrip(forms.ModelForm):
     class Meta:
         model=Trip
-        exclude=[]
+        fields="__all__"
 
-class FormAddImages(forms.ModelForm):
-    #image=MultipleFileField(label='Select files', required=False)
-    picture=MultipleFileField(label='Select files', required=False)
+class FormAddImage(forms.ModelForm):
     class Meta:
         model=TripGallery
         fields=("picture",)
@@ -73,13 +60,52 @@ class FormAddSchedule(forms.ModelForm):
     """
 
 
-class FormRegister(forms.ModelForm):
+""""
+class FormRegister(forms.Form):
+    username=forms.CharField(max_length=255)
+    pwd=forms.PasswordInput()
+    pwd_check=forms.PasswordInput()
+    phone=forms.CharField(
+        max_length=32,
+        validators=[
+            RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+                           message="Invalid phone number format!")
+        ])
+    newsletter=forms.BooleanField(required=False)
+    def clean(self):
+        super(FormRegister, self).clean()
+        print(self.cleaned_data)
+        if(self.cleaned_data.get("password")!=self.cleaned_data.get("password_check")):
+            self._errors["password"]=self.error_class(["Passwords don't match!"])
+        return self.cleaned_data
+"""
+
+class FormRegister(UserCreationForm):
+    phone=forms.CharField(
+        max_length=32,
+        validators=[
+            RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+                           message="Invalid phone number format!")
+        ])
+    #fullname=forms.CharField(max_length=255)
+    newsletter=forms.BooleanField(required=False)
     class Meta:
-        model=Customer
-        exclude=[]
+        model=User
+        fields=["username", "first_name", "last_name", "password1", "password2"]
+
+    
 
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model=Review
         exclude=["date_created","date_edited","customer","revtrip"]
+
+
+
+#################################################################
+class FormGuide(forms.ModelForm):
+    class Meta:
+        model=Guide
+        fields=["name","email","phone","description","portrait"]
+

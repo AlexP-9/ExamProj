@@ -1,0 +1,78 @@
+{% extends "BaseTempl.html" %}
+{% load static %}
+
+{% block title %}
+{% if edit %}
+Edit Trip
+{% else %}
+Add New Trip
+{% endif %}
+{% endblock %}
+
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  input, textarea, select {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+</style>
+{% endblock headextra %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white fw-bold text-center">
+          {% if edit %}
+          Edit Trip
+          {% else %}
+          Add New Trip
+          {% endif %}
+        </div>
+        <div class="card-body">
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Title</label>
+              {{ FormTrip.title }}
+              <p>{{FormTrip.errors.title}}</p>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              {{ FormTrip.description }}
+              <p>{{FormTrip.errors.description}}</p>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Tags</label>
+              {{ FormTrip.tags }}
+              <p>{{FormTrip.errors.tags}}</p>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Difficulty</label>
+              {{ FormTrip.difficulty }}
+              <p>{{FormTrip.errors.difficulty}}</p>
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100">
+            {% if edit %}
+            Save changes
+            {% else %}
+            Add New Trip
+            {% endif %}
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
+
