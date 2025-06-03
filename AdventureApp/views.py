@@ -1,4 +1,4 @@
-from django.db.models import Count, F
+from django.db.models import Count, F, Q
 
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 
@@ -124,20 +124,37 @@ def view_trip(request, tid):
     
     visited=User.objects.filter(schedules__trip=tid, schedules__end__lte=datetime.now(),id=request.user.id).exists()
     
+    user_review=reviewsdb.filter(customer__id=request.user.id).first()
+    reviewsshown=reviewsdb.filter(~Q(customer__id=request.user.id))
     
-    #commentform=ReviewForm(request.POST, instance=)
-    if request.method=="POST":
-        if(visited):
-            commentform=ReviewForm(request.POST)
-            if(commentform.is_valid()):
-                #Review
-                commentform.save()
-                messages.add_message(request,messages.SUCCESS,"Thank you for your feedback!")
+    commentform=ReviewForm(instance=user_review)
+    
+    if(request.method=="POST"):
+        commentform=ReviewForm(request.POST, instance=user_review)
+        if(commentform.is_valid()):
+            if(user_review):
+                #OK, edit this review
+                user_review.revtitle=commentform.cleaned_data["revtitle"]
+                user_review.comment=commentform.cleaned_data["comment"]
+                user_review.rating=commentform.cleaned_data["rating"]
+                user_review.save()
+            else:
+                #This is a new review
+                Review(revtitle=commentform.cleaned_data["revtitle"],
+                        comment=commentform.cleaned_data["comment"],
+                        rating=commentform.cleaned_data["rating"],
+                        customer=request.user,
+                        revtrip=tripdb
+                        ).save()
+
+            
+   
     return render(request, "Trips/TripPage.html",
                   {
                       "tripobj":tripdb,
                       "picobjs":picsdb,
-                      "reviews":reviewsdb,
+                      "reviews":reviewsshown,
+                      "reviews_count":reviewsdb.count(),
                       "schedule":availsched,
                       "visited":visited,
                       "registered":registered,
