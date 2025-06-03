@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
-from .forms import ReviewForm, FormRegister
+from .forms import ReviewForm, FormRegister, FormChangeData, FormChangePassword
 from .models import Guide, Review, Schedule, Trip, TripGallery, Customer, User, Tag
 
 from datetime import datetime
@@ -91,16 +91,56 @@ def view_trip_history(request):
 
 @login_required
 def view_account_edit_data(request):
-    dbuser=request.user
-    custdb=Customer.objects.filter(user=request.user)
+    if(request.user.is_staff):
+        return redirect("profile")
+    dbuser=User.objects.get(id=request.user.id)
+    dbcustomer=Customer.objects.get(user=request.user)
 
+    if(request.method=="POST"):
+        forminfo=FormChangeData(request.POST, instance=dbuser)
+        if(forminfo.is_valid()):
+            dbuser.username=forminfo.cleaned_data["username"]
+            dbuser.first_name=forminfo.cleaned_data["first_name"]
+            dbuser.last_name=forminfo.cleaned_data["last_name"]
+            dbcustomer.phone=forminfo.cleaned_data["phone"]
+            dbcustomer.newsletter=forminfo.cleaned_data["newsletter"]
+            dbuser.save()
+            dbcustomer.save()
+            messages.add_message(request, messages.INFO, "Data changed successfully!")
+            return redirect("profile")
+    else:
+        forminfo=FormChangeData()
+        forminfo.initial["username"]=dbuser.username
+        forminfo.initial["first_name"]=dbuser.first_name
+        forminfo.initial["last_name"]=dbuser.last_name
+        forminfo.initial["phone"]=dbcustomer.phone
+        forminfo.initial["newsletter"]=dbcustomer.newsletter
 
-    regform=FormRegister()
-    return
+    
+    return render(request, "Accounts/ChangeInfo.html",{
+        "forminfo":forminfo
+    })
 
 @login_required
 def view_account_new_password(request):
-    return
+    if(request.method=="POST"):
+        formpass=FormChangePassword(request.POST)
+        print(formpass.fields)
+        if(request.user.check_password(request.POST['oldpassword'])):
+            if(formpass.is_valid()):
+                changeduser=User.objects.get(id=request.user.id)
+                changeduser.set_password(formpass.cleaned_data["password1"])
+                changeduser.save()
+                messages.add_message(request, messages.INFO, "Password changed successfully!")
+                return redirect("profile")
+        else:
+            formpass.add_error("oldpassword","Incorrect old password!")
+    else:
+        formpass=FormChangePassword()
+
+    return render(request, "Accounts/ChangePassword.html",{
+        "formpass":formpass
+    })
 
 """
 #Trip views (all, individual, etc.)
@@ -119,9 +159,10 @@ def view_trip(request, tid):
     tripdb=get_object_or_404(Trip,id=tid)
     picsdb=TripGallery.objects.filter(trip__id=tid)
     reviewsdb=Review.objects.filter(revtrip=tid)
-    availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(trip__id=tid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
     registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants__id=request.user.id)
-    
+    availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(trip__id=tid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
+    availsched=availsched.filter(~Q(id__in=registered))
+
     visited=User.objects.filter(schedules__trip=tid, schedules__end__lte=datetime.now(),id=request.user.id).exists()
     
     user_review=reviewsdb.filter(customer__id=request.user.id).first()
@@ -183,15 +224,23 @@ def view_all_trips(request):
 
 def view_trip_register(request, sid):   #SID = Schedule ID, so that we could filter out the old and fully-booked trips
     #scheddb=Schedule.objects.filter(id=sid) #This is a workaround so that the user doesn't get a 404 error
-    availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(id=sid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
+    availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(id=sid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start').first()
     
-    if(availsched[0].attendants.contains(request.user)):
+    
+    overlaps=set(Schedule.objects.filter(
+                    start__lte=availsched.end,
+                    end__gte=availsched.start,
+                    attendants__id=request.user.id
+                ))
+
+    if(availsched.attendants.contains(request.user)):
         #Nope!
         messages.add_message(request, messages.INFO, "Your are already registered for this trip!")
         return redirect("main_page")
 
     return render(request, "Trips/TripRegister.html",{
-        "scheddb":availsched
+        "scheddb":availsched,
+        "overlaps":overlaps
     })
 
 @login_required

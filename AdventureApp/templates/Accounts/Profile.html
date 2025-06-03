@@ -37,8 +37,8 @@ Your profile
 
 {% if not user.is_staff %}
 <br><a href="{% url 'edit_user_data' %}" class="btn btn-primary">Edit profile</a>
-<br><a href="{% url 'new_password' %}" class="btn btn-secondary">Create a new password</a>
 {% endif %}
+<br><a href="{% url 'new_password' %}" class="btn btn-secondary">Change password</a>
 
 {% if schedactive %}
     <h2>Active trips</h2>

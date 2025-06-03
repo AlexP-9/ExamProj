@@ -21,13 +21,7 @@
 
   <!-- Dates Section -->
   <div class="text-center mb-4">
-    <h5 class="fw-semibold mb-3">Closest available dates:</h5>
-
-
-  {% if registered %}
-    <p class="text-success">You are already registered for this trip.</p>
-  {% endif %}
-
+  <h5 class="fw-semibold mb-3">Closest available dates:</h5>
   {% if schedule %}
       <div class="d-flex flex-column align-items-center gap-2 mb-3">
         {% for s in schedule|slice:":10" %}
@@ -36,8 +30,15 @@
       </div>
       <a href="{% url 'trip_full_schedule' tripobj.id %}" class="btn btn-danger px-4">See other available dates</a>
     {% else %}
-      <p class="text-muted">(No scheduled dates so far)</p>
+      <p class="text-muted">(No available dates so far)</p>
     {% endif %}
+
+    {% if registered %}
+    <p class="text-success">You are already registered for this trip:</p>
+    {% for r in registered %}
+          <a href="" class="btn btn-outline-success px-4">{{ r.start }}</a>
+    {% endfor %}
+  {% endif %}
   </div>
 
   <!-- Image Gallery -->

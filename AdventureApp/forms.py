@@ -46,39 +46,6 @@ class FormAddSchedule(forms.ModelForm):
         model=Schedule
         exclude=["attendants",]
     #I will check it in the view. It's easier to exclude the instance by ID there.
-    """
-    def clean(self):
-        cleandata=self.cleaned_data
-        overlaps=set(Schedule.objects.filter(
-                start__lte=cleandata["end"],
-                end__gte=cleandata["start"],
-                guides__in=cleandata["guides"]
-            ).exclude(id=cleandata["id"]))
-        if(overlaps):
-            raise ValidationError(f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))
-        return cleandata
-    """
-
-
-""""
-class FormRegister(forms.Form):
-    username=forms.CharField(max_length=255)
-    pwd=forms.PasswordInput()
-    pwd_check=forms.PasswordInput()
-    phone=forms.CharField(
-        max_length=32,
-        validators=[
-            RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
-                           message="Invalid phone number format!")
-        ])
-    newsletter=forms.BooleanField(required=False)
-    def clean(self):
-        super(FormRegister, self).clean()
-        print(self.cleaned_data)
-        if(self.cleaned_data.get("password")!=self.cleaned_data.get("password_check")):
-            self._errors["password"]=self.error_class(["Passwords don't match!"])
-        return self.cleaned_data
-"""
 
 class FormRegister(UserCreationForm):
     phone=forms.CharField(
@@ -93,7 +60,24 @@ class FormRegister(UserCreationForm):
         model=User
         fields=["username", "first_name", "last_name", "password1", "password2"]
 
-    
+
+class FormChangeData(forms.ModelForm):
+    phone=forms.CharField(
+        max_length=32,
+        validators=[
+            RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
+                           message="Invalid phone number format!")
+        ])
+    newsletter=forms.BooleanField(required=False)
+    class Meta:
+        model=User
+        fields=["username", "first_name", "last_name"]
+
+class FormChangePassword(UserCreationForm):
+    oldpassword= forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model=User
+        fields=["password1", "password2"]
 
 
 class ReviewForm(forms.ModelForm):
