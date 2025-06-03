@@ -1,5 +1,9 @@
 {% extends "BaseTempl.html" %}
 
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
+
 {% block title %}
 Your profile
 {% endblock title %}
@@ -8,6 +12,33 @@ Your profile
 {% block body %}
 <h1><u>{{request.user}}'s Profile</u></h1>
 
+<h4>Personal data</h4>
+<table class="table-bordered align-left">
+    <tr>
+        <td><strong>Name</strong></td>
+        <td>{{profile.first_name}} {{profile.last_name}}</td>
+    </tr>
+    {% if customer %}
+    <tr>
+        <td><strong>Contact phone</strong></td>
+        <td>{{customer.0.phone}}</td>
+    </tr>
+    <tr>
+        <td><strong>Newsletter status</strong></td>
+        <td>{% if customer.0.newsletter %}S{% else %}Not s{% endif %}ubscribed</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td><strong>Staff status</strong></td>
+        <td>{% if user.is_staff %}C{% else %}Unc{% endif %}onfirmed</td>
+    </tr>
+    {% endif %}
+</table>
+
+{% if not user.is_staff %}
+<br><a href="{% url 'edit_user_data' %}" class="btn btn-primary">Edit profile</a>
+<br><a href="{% url 'new_password' %}" class="btn btn-secondary">Create a new password</a>
+{% endif %}
 
 {% if schedactive %}
     <h2>Active trips</h2>
@@ -31,7 +62,9 @@ Your profile
     </ul>
 {% endif %}
 
+{% if schedpast %}
 <a href="{% url 'trip_history' %}">Your trip history</a>
+{% endif %}
 
 
 {% endblock body %}

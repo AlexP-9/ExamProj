@@ -20,7 +20,7 @@ class Customer(models.Model):
     	verbose_name_plural="Customers"
 
 class Tag(models.Model):
-    name=models.CharField(max_length=255)
+    name=models.CharField(max_length=255, unique=True)
     def __str__(self):
         return(f"{self.name}")
 

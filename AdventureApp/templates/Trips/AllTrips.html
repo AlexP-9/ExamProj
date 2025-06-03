@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-All Trips
+Our Trips
 {% endblock %}
 
 {% block headextra %}
@@ -14,11 +14,24 @@ All Trips
   <section class="py-5 text-center container">
     <div class="row py-lg-4">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-bold">All Trips</h1>
+        <h1 class="fw-bold">Our Trips</h1>
         <p class="lead text-muted">Explore our latest adventures across Europe.</p>
       </div>
     </div>
   </section>
+
+  {% if tags %}
+
+  <p>Filter trips:</p>
+  <form>
+    {% for t in tags %}
+    <input type="checkbox" name="{{t.name}}" id="{{t.name}}" {% if t.name in request.GET %}checked{% endif %}>
+    <label for="{{t.name}}">{{t.name}}</label><br>
+    {% endfor %}
+    <button class="btn btn-success py-2" type="submit">Filter</button>
+  </form>
+
+  {% endif %}
 
   <div class="album py-5 bg-light">
     <div class="container">

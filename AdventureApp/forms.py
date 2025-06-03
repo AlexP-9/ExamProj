@@ -108,4 +108,3 @@ class FormGuide(forms.ModelForm):
     class Meta:
         model=Guide
         fields=["name","email","phone","description","portrait"]
-

@@ -31,6 +31,8 @@ urlpatterns = [
     path("accounts/login/",AdventureApp.views.view_login, name="login"),
     path("accounts/logout/",AdventureApp.views.view_logout, name="logout"),
     path("accounts/registration/",AdventureApp.views.view_register, name="registration"),
+    path("accounts/editdata/",AdventureApp.views.view_account_edit_data,name="edit_user_data"),
+    path("accounts/newpassword/",AdventureApp.views.view_account_new_password,name="new_password"),
 ]
 
 #A workaround so that we don't have to serve media files
