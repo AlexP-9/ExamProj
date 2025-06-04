@@ -10,36 +10,59 @@ Change information
 {% endblock headextra %}
 
 {% block body %}
-<h1>Changing information</h1>
-<div class="d-flex align-items-center justify-content-center vh-100 bg-light">
-  <main class="form-signin w-100" style="max-width: 400px;">
-    <form method="post">
-      {% csrf_token %}
+<div class="container py-5">
+  <h1 class="text-center mb-4 fw-bold">Update Your Information</h1>
 
-      <label>Username:</label><br>
-      <input type="text" name="username" value="{% if forminfo.username.value %}{{forminfo.username.value}}{% endif %}" required>
-      {{forminfo.errors.username}}<br>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
 
-      <label>First name:</label><br>
-      <input type="text" name="first_name" value="{% if forminfo.first_name.value %}{{forminfo.first_name.value}}{% endif %}" required>
-      {{forminfo.errors.first_name}}<br>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username"
+                     value="{% if forminfo.username.value %}{{ forminfo.username.value }}{% endif %}" required>
+              <div class="text-danger">{{ forminfo.errors.username }}</div>
+            </div>
 
-      <label>Last name:</label><br>
-      <input type="text" name="last_name" value="{% if forminfo.last_name.value %}{{forminfo.last_name.value}}{% endif %}" required>
-      {{forminfo.errors.last_name}}<br>
+            <div class="mb-3">
+              <label for="first_name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="first_name" name="first_name"
+                     value="{% if forminfo.first_name.value %}{{ forminfo.first_name.value }}{% endif %}" required>
+              <div class="text-danger">{{ forminfo.errors.first_name }}</div>
+            </div>
 
-      <label>Phone number:</label><br>
-      <input type="tel" name="phone" pattern="^\+?1?\d{9,15}$" class="form-control" id="floatingPhone" placeholder="Phone" value="{% if forminfo.phone.value %}{{forminfo.phone.value}}{% endif %}" required>
-      {{forminfo.errors.phone}}<br>
+            <div class="mb-3">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="last_name" name="last_name"
+                     value="{% if forminfo.last_name.value %}{{ forminfo.last_name.value }}{% endif %}" required>
+              <div class="text-danger">{{ forminfo.errors.last_name }}</div>
+            </div>
 
-      <input type="checkbox" class="form-check-input" id="newsletterCheck" {% if forminfo.newsletter.value %}checked{% endif %} name="newsletter">
-      <label class="form-check-label" for="newsletterCheck">
-        I want to subscribe to the newsletter
-      </label>
-      {{ forminfo.errors.newsletter }}
+            <div class="mb-3">
+              <label for="floatingPhone" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="floatingPhone" name="phone" pattern="^\+?1?\d{9,15}$"
+                     placeholder="e.g. +4712345678"
+                     value="{% if forminfo.phone.value %}{{ forminfo.phone.value }}{% endif %}" required>
+              <div class="text-danger">{{ forminfo.errors.phone }}</div>
+            </div>
 
-      <button class="btn btn-warning w-100 py-2" type="submit">Change information</button>
-    </form>
-  </main>
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="newsletterCheck" name="newsletter"
+                     {% if forminfo.newsletter.value %}checked{% endif %}>
+              <label class="form-check-label" for="newsletterCheck">
+                I want to subscribe to the newsletter
+              </label>
+              <div class="text-danger">{{ forminfo.errors.newsletter }}</div>
+            </div>
+
+            <button class="btn btn-warning w-100" type="submit">Change Information</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock body %}

@@ -1,70 +1,89 @@
 {% extends "BaseTempl.html" %}
-
-{% block headextra %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-{% endblock headextra %}
+{% load static %}
 
 {% block title %}
 Your profile
 {% endblock title %}
 
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
 
 {% block body %}
-<h1><u>{{request.user}}'s Profile</u></h1>
+<div class="container py-5">
+  <h1 class="text-center mb-4 fw-bold">{{ request.user }}'s Profile</h1>
 
-<h4>Personal data</h4>
-<table class="table-bordered align-left">
-    <tr>
-        <td><strong>Name</strong></td>
-        <td>{{profile.first_name}} {{profile.last_name}}</td>
-    </tr>
-    {% if customer %}
-    <tr>
-        <td><strong>Contact phone</strong></td>
-        <td>{{customer.0.phone}}</td>
-    </tr>
-    <tr>
-        <td><strong>Newsletter status</strong></td>
-        <td>{% if customer.0.newsletter %}S{% else %}Not s{% endif %}ubscribed</td>
-    </tr>
-    {% else %}
-    <tr>
-        <td><strong>Staff status</strong></td>
-        <td>{% if user.is_staff %}C{% else %}Unc{% endif %}onfirmed</td>
-    </tr>
-    {% endif %}
-</table>
+  <div class="card mb-4">
+    <div class="card-header fw-bold">
+      Personal data
+    </div>
+    <div class="card-body">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{ profile.first_name }} {{ profile.last_name }}</td>
+          </tr>
+          {% if customer %}
+            <tr>
+              <th scope="row">Contact phone</th>
+              <td>{{ customer.0.phone }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Newsletter status</th>
+              <td>{% if customer.0.newsletter %}Subscribed{% else %}Not subscribed{% endif %}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <th scope="row">Staff status</th>
+              <td>{% if user.is_staff %}Confirmed{% else %}Unconfirmed{% endif %}</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
 
-{% if not user.is_staff %}
-<br><a href="{% url 'edit_user_data' %}" class="btn btn-primary">Edit profile</a>
-{% endif %}
-<br><a href="{% url 'new_password' %}" class="btn btn-secondary">Change password</a>
+      <div class="mt-3">
+        {% if not user.is_staff %}
+          <a href="{% url 'edit_user_data' %}" class="btn btn-primary me-2">Edit profile</a>
+        {% endif %}
+        <a href="{% url 'new_password' %}" class="btn btn-secondary">Change password</a>
+      </div>
+    </div>
+  </div>
 
-{% if schedactive %}
-    <h2>Active trips</h2>
-    <ul>
-    {% for s in schedactive %}
-    <li>
-        <a href="{% url 'trip' s.trip.id %}">{{s.trip.title}} - Ends {{s.end}}</a>
-    </li>
-    {% endfor %}
-    </ul>
-{% endif %}
+  {% if schedactive %}
+    <div class="mb-4">
+      <h4 class="mb-2">Active trips</h4>
+      <ul class="list-group">
+        {% for s in schedactive %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'trip' s.trip.id %}">{{ s.trip.title }}</a>
+          <span class="text-muted">Ends {{ s.end }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
 
-{% if schedfuture %}
-    <h2>Planned trips</h2>
-    <ul>
-    {% for s in schedfuture %}
-    <li>
-        <a href="{% url 'trip' s.trip.id %}">{{s.trip.title}} - Starts {{s.start}}</a>
-    </li>
-    {% endfor %}
-    </ul>
-{% endif %}
+  {% if schedfuture %}
+    <div class="mb-4">
+      <h4 class="mb-2">Planned trips</h4>
+      <ul class="list-group">
+        {% for s in schedfuture %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'trip' s.trip.id %}">{{ s.trip.title }}</a>
+          <span class="text-muted">Starts {{ s.start }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
 
-{% if schedpast %}
-<a href="{% url 'trip_history' %}">Your trip history</a>
-{% endif %}
+  {% if schedpast %}
+    <div class="mt-4">
+      <a href="{% url 'trip_history' %}" class="btn btn-outline-primary">Your trip history</a>
+    </div>
+  {% endif %}
 
-
+</div>
 {% endblock body %}
