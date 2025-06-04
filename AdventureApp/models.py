@@ -87,7 +87,8 @@ class Schedule(models.Model):
                 check=models.Q(
                     start__lte=models.F("end")
                 ),
-                name="starts_earlier_than_finishes"
+                name="starts_earlier_than_finishes",
+                violation_error_message="The trip ending date is earlier than the starting date. Pick the dates again."
             )
         ]
 
