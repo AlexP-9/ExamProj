@@ -8,8 +8,9 @@ Home
 {% block body %}
 <div class="mainpage-background">
 
-  <!-- ✅ Bootstrap Carousel Section -->
-  <div id="mainCarousel" class="carousel slide mb-5 carousel-slide-adjusted" data-bs-ride="carousel" data-bs-interval="4500">
+  <!-- ✅ Bootstrap Carousel Section with Images -->
+  <div id="mainCarousel" class="carousel slide mb-5 carousel-slide-adjusted" data-bs-ride="carousel" data-bs-interval="4500" data-bs-pause="false">
+
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
       <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -19,9 +20,7 @@ Home
     <div class="carousel-inner">
       <!-- Slide 1 -->
       <div class="carousel-item active">
-        <video class="d-block w-100" autoplay muted loop playsinline>
-          <source src="{% static 'videos/short4.mp4' %}" type="video/mp4">
-        </video>
+        <img src="{% static 'images/img1.jpg' %}" class="d-block w-100" alt="Slide 1">
         <div class="carousel-caption text-start">
           <h1>Where Journeys Begin.</h1>
           <p class="opacity-75">Travel together, dream bigger. Explore the world with like-minded adventurers.</p>
@@ -31,9 +30,7 @@ Home
 
       <!-- Slide 2 -->
       <div class="carousel-item">
-        <video class="d-block w-100" autoplay muted loop playsinline>
-          <source src="{% static 'videos/short2.mp4' %}" type="video/mp4">
-        </video>
+        <img src="{% static 'images/img2.jpg' %}" class="d-block w-100" alt="Slide 2">
         <div class="carousel-caption">
           <h1>Breathe in the World.</h1>
           <p>One coast, one culture at a time. Join a group, make memories.</p>
@@ -43,9 +40,7 @@ Home
 
       <!-- Slide 3 -->
       <div class="carousel-item">
-        <video class="d-block w-100" autoplay muted loop playsinline>
-          <source src="{% static 'videos/short5.mp4' %}" type="video/mp4">
-        </video>
+        <img src="{% static 'images/img3.jpg' %}" class="d-block w-100" alt="Slide 3">
         <div class="carousel-caption text-end">
           <h1>Every Trip Tells a Story.</h1>
           <p>Ready to write yours? Let’s go.</p>
@@ -58,7 +53,6 @@ Home
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-
     <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
@@ -97,15 +91,16 @@ Home
       </div>
     </div>
   </div>
+
 </div>
 
-<!-- ✅ Featurette Section -->
+<!-- ✅ Featurette Sections -->
 <hr class="featurette-divider">
 
 <div class="row featurette">
   <div class="col-md-7">
     <h2 class="featurette-heading fw-normal lh-1">
-      Where Journeys Begin.<span class="text-body-secondary">Travel Together, Dream Bigger.</span>
+      Where Journeys Begin. <span class="text-body-secondary">Travel Together, Dream Bigger.</span>
     </h2>
     <p class="lead">Explore the beauty of untouched landscapes, historic cities, and vibrant cultures. Each adventure awaits you!</p>
   </div>
