@@ -18,7 +18,7 @@
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
       <div class="card shadow-sm">
-        <div class="card-header bg-danger text-white fw-bold">
+        <div class="card-header bg-primary text-white fw-bold">
           {% if GuideEdit %}
             Edit Guide
           {% else %}
@@ -31,7 +31,7 @@
             {% csrf_token %}
             {{ FormGuid.as_p }}
 
-            <button type="submit" class="btn btn-danger w-100 mt-3">
+            <button type="submit" class="btn btn-primary w-100 mt-3">
               {% if GuideEdit %}
                 Save Changes
               {% else %}

@@ -24,7 +24,7 @@ Add New Trip
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
       <div class="card shadow-sm">
-        <div class="card-header bg-danger text-white fw-bold text-center">
+        <div class="card-header bg-primary text-white fw-bold text-center">
           {% if edit %}
           Edit Trip
           {% else %}
@@ -60,7 +60,7 @@ Add New Trip
               <p>{{FormTrip.errors.difficulty}}</p>
             </div>
 
-            <button type="submit" class="btn btn-danger w-100">
+            <button type="submit" class="btn btn-primary w-100">
             {% if edit %}
             Save changes
             {% else %}
