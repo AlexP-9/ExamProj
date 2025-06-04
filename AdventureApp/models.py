@@ -6,7 +6,6 @@ from django.contrib.auth.models import User, AbstractUser
 
 class Customer(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
-    #fullname=models.CharField(max_length=255)
     phone=models.CharField(
         max_length=32,
         validators=[
@@ -38,16 +37,12 @@ class Trip(models.Model):
     description=models.TextField()
     tags=models.ManyToManyField(Tag)
     difficulty=models.ForeignKey(Difficulty, on_delete=models.RESTRICT)    #Or models.SET_NULL or models.CASCADE
-    #difficulty=models.IntegerField(choices=[(0,"Very easy"),()])
-    #reviews=models.ManyToManyField(Review)
     def __str__(self):
         return(f"{self.title}")
 
 class TripGallery(models.Model):
     picture=models.ImageField(upload_to="TripImages/")
     trip=models.ForeignKey(Trip,on_delete=models.CASCADE)
-    #^Should this be able to be NULL?^
-    #What happens after deletion, do files stay?
     def __str__(self):
         return(f"{self.trip.title} - {self.picture.name}")
     class Meta:
@@ -76,7 +71,6 @@ class Schedule(models.Model):
     end=models.DateTimeField()
     price=models.DecimalField(max_digits=12,decimal_places=2)
     maxattendants=models.IntegerField()
-    #attendants=models.ManyToManyField(Customer, blank=True, related_name="schedules")
     attendants=models.ManyToManyField(User, blank=True, related_name="schedules")
     guides=models.ManyToManyField(Guide)
 
@@ -87,8 +81,7 @@ class Schedule(models.Model):
                 check=models.Q(
                     start__lte=models.F("end")
                 ),
-                name="starts_earlier_than_finishes",
-                violation_error_message="The trip ending date is earlier than the starting date. Pick the dates again."
+                name="starts_earlier_than_finishes"
             )
         ]
 
@@ -97,10 +90,8 @@ class Schedule(models.Model):
         
 
 class Review(models.Model):
-    #customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
     customer=models.ForeignKey(User,on_delete=models.CASCADE)
     revtrip=models.ForeignKey(Trip, null=True, on_delete=models.SET_NULL)
-    #^Should this be able to be NULL?^
     rating=models.IntegerField(validators=[
         MinValueValidator(0),
         MaxValueValidator(10)
@@ -119,4 +110,3 @@ class Review(models.Model):
 
     def __str__(self):
         return(f"{self.revtrip}: {self.rating}/{self.revtitle}/{self.customer}")
-

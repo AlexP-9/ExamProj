@@ -1,4 +1,4 @@
-from django.db.models import Count, F, Q
+from django.db.models import Count, F, Q, Avg
 
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 
@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 
 from .forms import ReviewForm, FormRegister, FormChangeData, FormChangePassword
-from .models import Guide, Review, Schedule, Trip, TripGallery, Customer, User, Tag
+from .models import Guide, Review, Schedule, Trip, TripGallery, Customer, User, Tag, Difficulty
 
 from datetime import datetime
 
@@ -156,7 +156,8 @@ def view_mainpage(request):
                   })
 
 def view_trip(request, tid):
-    tripdb=get_object_or_404(Trip,id=tid)
+    tripdb=get_object_or_404(Trip,id=tid)   #Yeah, it's intended :-)
+    tripdb=Trip.objects.annotate(avgrating=Avg("review__rating")).get(id=tid)
     picsdb=TripGallery.objects.filter(trip__id=tid)
     reviewsdb=Review.objects.filter(revtrip=tid)
     registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants__id=request.user.id)
@@ -213,13 +214,34 @@ def view_trip_full_schedule(request, tid):
 def view_all_trips(request):
     #all_trips = Trip.objects.all()
     all_tags=Tag.objects.all()
-    if(request.GET):
-        returned_trips=Trip.objects.all().filter(tags__in=Tag.objects.filter(name__in=request.GET))
+    all_difficulties=Difficulty.objects.all()
+
+    reqget=request.GET
+    if(reqget):
+        all_filt_tags=[key for key in reqget.items() if key[0].startswith("Tag_")]
+        if(len(all_filt_tags)!=0):
+            filt_tags=[t[0][4:] for t in all_filt_tags if(t[1]=="on")]
+        else:
+            filt_tags=[t.name for t in all_tags]
+
+        all_filt_diffs=[key for key in reqget.items() if key[0].startswith("Diff_")]
+        if(len(all_filt_diffs)!=0):
+            filt_diffs=[d[0][5:] for d in all_filt_diffs if(d[1]=="on")]
+        else:
+            filt_diffs=[d.name for d in all_difficulties]
+
+        print(filt_diffs)
+
+        returned_trips=Trip.objects.all().filter(tags__name__in=filt_tags, difficulty__name__in=filt_diffs)
     else:
         returned_trips = Trip.objects.all()
+    
+    returned_trips=returned_trips.annotate(avgrating=Avg("review__rating"))
+    
     return render(request, "Trips/AllTrips.html", {
         "trips": returned_trips,#all_trips,
-        "tags": all_tags
+        "tags": all_tags,
+        "difficulties":all_difficulties
     })
 
 def view_trip_register(request, sid):   #SID = Schedule ID, so that we could filter out the old and fully-booked trips
