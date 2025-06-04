@@ -12,7 +12,8 @@ class Customer(models.Model):
         validators=[
             RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
                            message="Invalid phone number format!")
-        ])
+        ],
+        unique=True)
     newsletter=models.BooleanField()
     def __str__(self):
         return(f"{self.user.first_name} {self.user.last_name} ({self.user.username})")
@@ -25,7 +26,7 @@ class Tag(models.Model):
         return(f"{self.name}")
 
 class Difficulty(models.Model):
-    name=models.CharField(max_length=255)
+    name=models.CharField(max_length=255, unique=True)
     description=models.TextField()
     def __str__(self):
         return(f"{self.name}")
@@ -33,7 +34,7 @@ class Difficulty(models.Model):
     	verbose_name_plural="Difficulties"
 
 class Trip(models.Model):
-    title=models.CharField(max_length=255)
+    title=models.CharField(max_length=255, unique=True)
     description=models.TextField()
     tags=models.ManyToManyField(Tag)
     difficulty=models.ForeignKey(Difficulty, on_delete=models.RESTRICT)    #Or models.SET_NULL or models.CASCADE
@@ -54,7 +55,7 @@ class TripGallery(models.Model):
 
 class Guide(models.Model):
     name=models.CharField(max_length=255)
-    email=models.EmailField(max_length=255)
+    email=models.EmailField(max_length=255, unique=True)
     portrait=models.ImageField(upload_to="GuidePics/", blank=True, null=True)
     description=models.TextField()
 

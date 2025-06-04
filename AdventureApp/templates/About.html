@@ -5,8 +5,7 @@
 
 {% block body %}
 
-
-<!-- Travel Specialist Call-to-Action Section -->
+<!-- The Travel Guides and contact section -->
 <section class="cta-specialists-section">
     <h2 class="cta-title">WANT TO PLAN A TRIP LIKE THIS TO ASIA?</h2>
     <p class="cta-subtext">
@@ -25,52 +24,44 @@
             <p>{{g.description}}</p>
         </div>
         {% endfor %}
-    </div>
-
-
-    
+    </div>    
 </section>
 
-
-
-
-
-<!-- Feature Highlights Section -->
+<!-- The Small Feature Boxes Section -->
 <section class="features-section">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <div class="features-grid">
         <div class="feature-card">
-            <img src="{% static 'icons/small-groups.svg' %}" alt="Small groups icon">
+            <i class="bi bi-people-fill" style="font-size: 40px; color: #004466;"></i>
             <h3>Small groups</h3>
             <p>Join a small group of like-minded travellers that, like you, are eager to safely and confidently experience all the things that make our world worth exploring.</p>
         </div>
         <div class="feature-card">
-            <img src="{% static 'icons/guaranteed-departures.svg' %}" alt="Guaranteed departures icon">
+            <i class="bi bi-airplane-fill"style="font-size: 40px; color: #004466;"></i>
             <h3>100% guaranteed departures</h3>
             <p>Pack those bags and don't break a sweat because we guarantee every single one of our departures. As long as it’s safe, you're going!</p>
         </div>
         <div class="feature-card">
-            <img src="{% static 'icons/local-guides.svg' %}" alt="Local guides icon">
+            <i class="bi bi-geo-alt-fill" style="font-size: 40px; color: #004466;"></i>
             <h3>Locally based guides</h3>
             <p>We don’t have tour guides — we have Chief Experience Officers. And they are all locally based, meaning they know the area you’re exploring like the back of their well-travelled hand.</p>
         </div>
         <div class="feature-card">
-            <img src="{% static 'icons/support-local.svg' %}" alt="Support local icon">
+            <i class="bi bi-house-heart-fill" style="font-size: 40px; color: #004466;"></i>
             <h3>Built to support local communities</h3>
             <p>We have always created our tours by building meaningful relationships with local communities, directly benefiting the people and places we visit.</p>
         </div>
         <div class="feature-card">
-            <img src="{% static 'icons/flexibility.svg' %}" alt="Flexibility icon">
+            <i class="bi bi-shuffle" style="font-size: 40px; color: #004466;"></i>
             <h3>Flexibility, freedom, fun</h3>
             <p>No matter the Travel Style, our tours balance well-planned itineraries with the flexibility to do your own thing and make the experience your own.</p>
         </div>
         <div class="feature-card">
-            <img src="{% static 'icons/g-for-good.svg' %}" alt="G for Good icon">
+            <i class="bi bi-globe-americas" style="font-size: 40px; color: #004466;"></i>
             <h3>G for Good</h3>
             <p>When you travel with us, you experience first-hand our commitment to making travel a force for good in everything we do.</p>
         </div>
     </div>
 </section>
-
-
 
 {% endblock body %}
