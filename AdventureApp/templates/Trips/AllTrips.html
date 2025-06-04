@@ -20,18 +20,37 @@ Our Trips
     </div>
   </section>
 
-  {% if tags %}
+{% if tags %}
+<div class="container mb-4">
+  <form method="get" class="d-flex align-items-center gap-3 flex-wrap">
+    
+    <!-- Dropdown Filter -->
+    <div class="dropdown">
+      <button class="btn btn-outline-primary dropdown-toggle px-4" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Filter by Tags
+      </button>
+      <ul class="dropdown-menu text-start px-3" aria-labelledby="filterDropdown" style="max-height: 300px; overflow-y: auto;">
+        {% for t in tags %}
+          <li>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="{{ t.name }}" id="tag-{{ t.name }}" {% if t.name in request.GET %}checked{% endif %}>
+              <label class="form-check-label" for="tag-{{ t.name }}">{{ t.name }}</label>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-  <p>Filter trips:</p>
-  <form>
-    {% for t in tags %}
-    <input type="checkbox" name="{{t.name}}" id="{{t.name}}" {% if t.name in request.GET %}checked{% endif %}>
-    <label for="{{t.name}}">{{t.name}}</label><br>
-    {% endfor %}
-    <button class="btn btn-success py-2" type="submit">Filter</button>
+    <!-- Apply Filter Button -->
+    <button type="submit" class="btn btn-primary">Apply Filter</button>
+
+    <!-- Reset Link -->
+    <a href="{% url 'view_all_trips' %}" class="btn btn-link">Reset</a>
+
   </form>
+</div>
+{% endif %}
 
-  {% endif %}
 
   <div class="album py-5 bg-light">
     <div class="container">

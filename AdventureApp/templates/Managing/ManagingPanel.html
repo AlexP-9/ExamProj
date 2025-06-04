@@ -1,17 +1,23 @@
 {% extends "BaseTempl.html" %}
 
 {% block title %}
-Administrational panel
+Administrational Panel
 {% endblock title %}
 
+{% block headextra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock headextra %}
+
 {% block body %}
-<h1>Administrational panel</h1>
+<div class="container py-5">
+  <h1 class="text-center mb-4 fw-bold">Administrational Panel</h1>
 
-<p><a href="{% url 'manage_schedule' %}">Manage schedule</a></p>
-
-<p><a href="{% url 'manage_trips' %}">Manage trips</a></p>
-
-<p><a href="{% url 'manage_guides' %}">Manage guides</a></p>
-
-
+  <div class="mx-auto" style="max-width: 300px;">
+    <div class="d-flex flex-column gap-3">
+      <a href="{% url 'manage_schedule' %}" class="btn btn-outline-primary rounded-pill w-100">Manage Schedule</a>
+      <a href="{% url 'manage_trips' %}" class="btn btn-outline-primary rounded-pill w-100">Manage Trips</a>
+      <a href="{% url 'manage_guides' %}" class="btn btn-outline-primary rounded-pill w-100">Manage Guides</a>
+    </div>
+  </div>
+</div>
 {% endblock body %}

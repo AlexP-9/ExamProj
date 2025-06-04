@@ -10,12 +10,11 @@ Registration
 {% endblock headextra %}
 
 {% block body %}
-<div class="d-flex align-items-center justify-content-center vh-100 bg-light">
+<div class="d-flex align-items-center justify-content-center vh-150">
   <main class="form-signin w-100" style="max-width: 400px;">
     <form method="post">
       {% csrf_token %}
       <div class="text-center mb-4">
-        <img class="mb-2" src="{% static 'images/adven1.png' %}" alt="Logo" width="72" height="72">
         <h1 class="h3 mb-3 fw-normal">Create an Account</h1>
       </div>
 
@@ -63,9 +62,9 @@ Registration
         {{ regform.errors.newsletter }}
       </div>
 
-      <button class="btn btn-danger w-100 py-2" type="submit">Register!</button>
+      <button class="btn btn-primary w-100 py-2" type="submit">Register!</button>
 
-      <p class="mt-4 text-center text-muted">&copy; 2025 Adventure Travelers</p>
+      <p class="mt-4 text-center text-muted">&copy; 2025 Travana</p>
     </form>
   </main>
 </div>

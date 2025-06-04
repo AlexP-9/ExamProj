@@ -11,7 +11,7 @@ Trip media
 
 {% block body %}
 <div class="container py-5">
-  <h1 class="text-center mb-5"><u>Manage media files</u></h1>
+  <h1 class="text-center mb-4 fw-bold">Manage media files</h1>
 
   <div class="d-flex justify-content-left mb-4">
     <a href="{% url 'manage_trips' %}" class="btn btn-success">Finish editing media</a>
@@ -19,11 +19,13 @@ Trip media
 
   <div class="mb-5">
     <h4 class="mb-3">Current media files</h4>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{formimg.as_p}}
-        <button type="submit" class="btn btn-warning mt-3">Add picture</button>
-      </form>
+    <form method="post" enctype="multipart/form-data" class="mb-4">  
+      {% csrf_token %}
+      {{ formimg.as_p }}
+      <button type="submit" class="btn btn-warning mt-3">Add picture</button>
+    </form>
+
+
     <div class="table-responsive">
         {% if picsdb %}
       <table class="table table-bordered table-hover align-middle">
