@@ -7,38 +7,100 @@ Home
 
 {% block body %}
 <div class="mainpage-background">
-    <div class="homepage-header">
-        <h1>ADVENTURE<br>TRAVELERS</h1>
-        <h2><i>It's a Big World Out There, Go Explore!</i></h2>
-        <h3><u>Nearest Available Trips</u></h3>
+
+  <!-- ✅ Bootstrap Carousel Section with Images -->
+  <div id="mainCarousel" class="carousel slide mb-5 carousel-slide-adjusted" data-bs-ride="carousel" data-bs-interval="4500" data-bs-pause="false">
+
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
 
-    <div class="trip-gallery">
+    <div class="carousel-inner">
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <img src="{% static 'images/img1.jpg' %}" class="d-block w-100" alt="Slide 1">
+        <div class="carousel-caption text-start">
+          <h1>Where Journeys Begin.</h1>
+          <p class="opacity-75">Travel together, dream bigger. Explore the world with like-minded adventurers.</p>
+          <p><a class="btn btn-lg btn-primary" href="{% url 'view_all_trips' %}">Explore Trips</a></p>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <img src="{% static 'images/img2.jpg' %}" class="d-block w-100" alt="Slide 2">
+        <div class="carousel-caption">
+          <h1>Breathe in the World.</h1>
+          <p>One coast, one culture at a time. Join a group, make memories.</p>
+          <p><a class="btn btn-lg btn-primary" href="{% url 'registration' %}">Join Now</a></p>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <img src="{% static 'images/img3.jpg' %}" class="d-block w-100" alt="Slide 3">
+        <div class="carousel-caption text-end">
+          <h1>Every Trip Tells a Story.</h1>
+          <p>Ready to write yours? Let’s go.</p>
+          <p><a class="btn btn-lg btn-primary" href="{% url 'about' %}">About Us</a></p>
+        </div>
+      </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- ✅ Trip Cards Section -->
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for s in availsched %}
-        <div class="trip-card">
+        <div class="col">
+          <div class="card shadow-sm h-100">
             {% with s.trip.tripgallery_set.first as first_image %}
-                {% if first_image %}
-                <img src="{{ first_image.picture.url }}" class="trip-card-image" alt="{{ s.trip.title }}">
-                {% endif %}
+              {% if first_image %}
+                <img src="{{ first_image.picture.url }}" class="card-img-top" alt="{{ s.trip.title }}">
+              {% else %}
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
+                     role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                  <title>Placeholder</title>
+                  <rect width="100%" height="100%" fill="#868e96"></rect>
+                  <text x="50%" y="50%" fill="#dee2e6" dy=".3em">No image</text>
+                </svg>
+              {% endif %}
             {% endwith %}
-            <div class="trip-card-body">
-                <h3>{{ s.trip.title }}</h3>
-                <p><strong>Available:</strong> {{ s.start }}</p>
-                <a href="{% url 'trip' s.trip.id %}">View Trip</a>
+            <div class="card-body">
+              <h5 class="card-title">{{ s.trip.title }}</h5>
+              <p class="card-subtitle mb-2 text-muted"><strong>Available:</strong> {{ s.start }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'trip' s.trip.id %}" class="btn btn-sm btn-outline-primary">View Trip</a>
+              </div>
             </div>
+          </div>
         </div>
         {% endfor %}
+      </div>
     </div>
+  </div>
+
 </div>
 
-
-<!-- Featurette Section Below the Trip Gallery -->
+<!-- ✅ Featurette Sections -->
 <hr class="featurette-divider">
 
 <div class="row featurette">
   <div class="col-md-7">
     <h2 class="featurette-heading fw-normal lh-1">
-      Discover Your Next Adventure. <span class="text-body-secondary">Unveil New Destinations.</span>
+      Where Journeys Begin. <span class="text-body-secondary">Travel Together, Dream Bigger.</span>
     </h2>
     <p class="lead">Explore the beauty of untouched landscapes, historic cities, and vibrant cultures. Each adventure awaits you!</p>
   </div>
@@ -55,14 +117,11 @@ Home
   </div>
   <div class="col-md-7">
     <h2 class="featurette-heading fw-normal lh-1">
-      Oh yeah, it’s that good. <span class="text-body-secondary">See for yourself.</span>
+      Breathe in the World. One Coast, <span class="text-body-secondary">One Culture at a Time.</span>
     </h2>
-    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
+    <p class="lead">Wander the coastline, connect with fellow explorers, and turn every destination into a shared story.</p>
   </div>
 </div>
 
 <hr class="featurette-divider">
-
-
-
 {% endblock body %}
