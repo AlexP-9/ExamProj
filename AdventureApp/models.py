@@ -70,7 +70,7 @@ class Schedule(models.Model):
     start=models.DateTimeField()
     end=models.DateTimeField()
     price=models.DecimalField(max_digits=12,decimal_places=2)
-    maxattendants=models.IntegerField()
+    maxattendants=models.IntegerField(verbose_name="Max. attendants")
     attendants=models.ManyToManyField(User, blank=True, related_name="schedules")
     guides=models.ManyToManyField(Guide)
 
@@ -81,7 +81,8 @@ class Schedule(models.Model):
                 check=models.Q(
                     start__lte=models.F("end")
                 ),
-                name="starts_earlier_than_finishes"
+                name="starts_earlier_than_finishes",
+                violation_error_message="Trip should start first before it ends!"
             )
         ]
 

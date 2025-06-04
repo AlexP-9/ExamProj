@@ -45,7 +45,7 @@ class FormAddSchedule(forms.ModelForm):
     class Meta:
         model=Schedule
         exclude=["attendants",]
-    #I will check it in the view. It's easier to exclude the instance by ID there.
+
 
 class FormRegister(UserCreationForm):
     phone=forms.CharField(
@@ -54,7 +54,6 @@ class FormRegister(UserCreationForm):
             RegexValidator(regex=r"^\+?1?\d{9,15}$", #https://www.geeksforgeeks.org/properly-store-and-validate-phone-numbers-in-django-models/
                            message="Invalid phone number format!")
         ])
-    #fullname=forms.CharField(max_length=255)
     newsletter=forms.BooleanField(required=False)
     class Meta:
         model=User
@@ -85,9 +84,6 @@ class ReviewForm(forms.ModelForm):
         model=Review
         exclude=["date_created","date_edited","customer","revtrip"]
 
-
-
-#################################################################
 class FormGuide(forms.ModelForm):
     class Meta:
         model=Guide

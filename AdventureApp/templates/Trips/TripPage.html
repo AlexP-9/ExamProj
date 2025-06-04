@@ -86,7 +86,7 @@
               <div class="text-danger">{{ commentform.errors.comment }}</div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+            <button type="submit" class="btn btn-primary w-100">{% if editing_review %}Edit{% else %}Submit{% endif %} Review</button>
           </form>
         </div>
       </div>

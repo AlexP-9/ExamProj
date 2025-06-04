@@ -23,7 +23,6 @@ urlpatterns = [
     path("trips/", views.view_all_trips, name="view_all_trips"),
     path("trip/<int:tid>/",views.view_trip,name="trip"),
     path("trip/<int:tid>/schedules",views.view_trip_full_schedule,name="trip_full_schedule"),
-    #path("trip/",views.,name="trips"),  #Do we need this one?
     path("trips/register/<int:sid>", views.view_trip_register, name="trip_register"),
     path("trips/register/<int:sid>/confirm", views.view_trip_register_confirm, name="trip_register_confirm"),
 
@@ -31,11 +30,6 @@ urlpatterns = [
     path("profile/history/",views.view_trip_history,name="trip_history"),
 
     path("about/",views.view_about,name="about"),
-    path("contact/",views.view_contact,name="contact"),
-
-    #path("login/",views.view_login,name="login"),
-    #path("register/",views.view_register,name="login"),
-    #path("logout/",views.view_logout,name="logout"),
 
     path("manage/",views_managing.view_managing_panel,name="managing_panel"),
 

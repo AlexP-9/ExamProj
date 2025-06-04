@@ -18,21 +18,27 @@ from datetime import datetime
 #Registration, Login, Logout
 """
 def view_login(request):
-    if(request.method=="POST"):
-        uname=request.POST.get("username")
-        passw=request.POST.get("password")
-        user=authenticate(request,username=uname,password=passw)
-        if user:    #if user is not None:
-            login(request,user)
-            next=request.GET.get("next","")
-            if(next):
-                return redirect(next)
-            return redirect("main_page")
-        messages.add_message(request, messages.WARNING, "Incorrect password!")
-        return render(request,"Accounts/LogIn.html",{
-            "username":uname            
-        })
-    return render(request, "Accounts/LogIn.html")
+    if(not request.user.is_authenticated):
+        if(request.method=="POST"):
+            uname=request.POST.get("username")
+            passw=request.POST.get("password")
+            user=authenticate(request,username=uname,password=passw)
+            if user:    #if user is not None:
+                login(request,user)
+                next=request.GET.get("next","")
+                if(next):
+                    return redirect(next)
+                return redirect("main_page")
+            messages.add_message(request, messages.WARNING, "Incorrect password!")
+            return render(request,"Accounts/LogIn.html",{
+                "username":uname            
+            })
+        return render(request, "Accounts/LogIn.html")
+    else:
+        next=request.GET.get("next","")
+        if(next):
+            return redirect(next)
+        return redirect("main_page")   
 
 def view_logout(request):
     logout(request)
@@ -42,24 +48,30 @@ def view_logout(request):
     return redirect("main_page")
 
 def view_register(request):
-    regform=FormRegister()
-    if(request.method=="POST"):
-        regform=FormRegister(request.POST)
-        if(regform.is_valid()):
-            regform.save()
-            authuser=authenticate(request,username=regform.cleaned_data["username"],password=regform.cleaned_data["password1"])
-            login(request,authuser)
-            customer=Customer(user=authuser,
-                              phone=regform.cleaned_data["phone"],
-                              newsletter=regform.cleaned_data["newsletter"])
-            customer.save()
-            next=request.GET.get("next","")
-            if(next):
-                return redirect(next)
-            return redirect("main_page")
-    return render(request, "Accounts/Register.html",{
-        "regform":regform
-    })
+    if(not request.user.is_authenticated):
+        regform=FormRegister()
+        if(request.method=="POST"):
+            regform=FormRegister(request.POST)
+            if(regform.is_valid()):
+                regform.save()
+                authuser=authenticate(request,username=regform.cleaned_data["username"],password=regform.cleaned_data["password1"])
+                login(request,authuser)
+                customer=Customer(user=authuser,
+                                phone=regform.cleaned_data["phone"],
+                                newsletter=regform.cleaned_data["newsletter"])
+                customer.save()
+                next=request.GET.get("next","")
+                if(next):
+                    return redirect(next)
+                return redirect("main_page")
+        return render(request, "Accounts/Register.html",{
+            "regform":regform
+        })
+    else:
+        next=request.GET.get("next","")
+        if(next):
+            return redirect(next)
+        return redirect("main_page")   
 
 @login_required
 def view_profile(request):
@@ -160,9 +172,14 @@ def view_trip(request, tid):
     tripdb=Trip.objects.annotate(avgrating=Avg("review__rating")).get(id=tid)
     picsdb=TripGallery.objects.filter(trip__id=tid)
     reviewsdb=Review.objects.filter(revtrip=tid)
-    registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants__id=request.user.id)
+
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(trip__id=tid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start')
-    availsched=availsched.filter(~Q(id__in=registered))
+    
+    if(request.user.is_authenticated):
+        registered=Schedule.objects.filter(trip__id=tid, end__gt=datetime.now(),attendants__id=request.user.id)
+        availsched=availsched.filter(~Q(id__in=registered))
+    else:
+        registered=None
 
     visited=User.objects.filter(schedules__trip=tid, schedules__end__lte=datetime.now(),id=request.user.id).exists()
     
@@ -170,6 +187,10 @@ def view_trip(request, tid):
     reviewsshown=reviewsdb.filter(~Q(customer__id=request.user.id))
     
     commentform=ReviewForm(instance=user_review)
+    if(user_review):
+        editing_review=True
+    else:
+        editing_review=False
     
     if(request.method=="POST"):
         commentform=ReviewForm(request.POST, instance=user_review)
@@ -200,7 +221,8 @@ def view_trip(request, tid):
                       "schedule":availsched,
                       "visited":visited,
                       "registered":registered,
-                      "commentform":commentform
+                      "commentform":commentform,
+                      "editing_review":editing_review
                   })
 
 def view_trip_full_schedule(request, tid):
@@ -229,10 +251,9 @@ def view_all_trips(request):
             filt_diffs=[d[0][5:] for d in all_filt_diffs if(d[1]=="on")]
         else:
             filt_diffs=[d.name for d in all_difficulties]
-
-        print(filt_diffs)
-
-        returned_trips=Trip.objects.all().filter(tags__name__in=filt_tags, difficulty__name__in=filt_diffs)
+        
+        wordsearch=reqget.get("wordsearch","")
+        returned_trips=Trip.objects.all().filter(Q(title__icontains=wordsearch) | Q(description__icontains=wordsearch), tags__name__in=filt_tags, difficulty__name__in=filt_diffs)
     else:
         returned_trips = Trip.objects.all()
     
@@ -248,17 +269,18 @@ def view_trip_register(request, sid):   #SID = Schedule ID, so that we could fil
     #scheddb=Schedule.objects.filter(id=sid) #This is a workaround so that the user doesn't get a 404 error
     availsched=Schedule.objects.annotate(att_count=Count("attendants")).filter(id=sid, start__gt=datetime.today().date(), att_count__lt=F("maxattendants")).order_by('start').first()
     
-    
-    overlaps=set(Schedule.objects.filter(
-                    start__lte=availsched.end,
-                    end__gte=availsched.start,
-                    attendants__id=request.user.id
-                ))
-
-    if(availsched.attendants.contains(request.user)):
-        #Nope!
-        messages.add_message(request, messages.INFO, "Your are already registered for this trip!")
-        return redirect("main_page")
+    if(request.user.is_authenticated):
+        overlaps=set(Schedule.objects.filter(
+                        start__lte=availsched.end,
+                        end__gte=availsched.start,
+                        attendants__id=request.user.id
+                    ))
+        if(availsched.attendants.contains(request.user)):
+            #Nope!
+            messages.add_message(request, messages.INFO, "Your are already registered for this trip!")
+            return redirect("main_page")
+    else:
+        overlaps=set([])
 
     return render(request, "Trips/TripRegister.html",{
         "scheddb":availsched,
@@ -272,6 +294,8 @@ def view_trip_register_confirm(request, sid):
         #Nope!
         return render(request, "Trips/TripRegister.html",
                       {"scheddb":None})
+    
+    print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",333)
     if(availsched[0].attendants.contains(request.user)):
         #Nope!
         messages.add_message(request, messages.INFO, "You are already registered for this trip!")
@@ -305,6 +329,3 @@ def view_about(request):
                   {
                       "guides":guidesdb
                   })
-
-def view_contact(request):
-    return render(request, "Contact.html")

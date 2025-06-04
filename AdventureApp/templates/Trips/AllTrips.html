@@ -23,6 +23,7 @@ Our Trips
 {% if tags %}
 <div class="container mb-4">
   <form method="get" class="d-flex align-items-center gap-3 flex-wrap">
+    <input type="text" placeholder="Search" name="wordsearch" class="form-control move-left" {% if "wordsearch" in request.GET %}value="{{request.GET.wordsearch}}"{% endif %}>
     
     <!-- Dropdown Filter -->
     <div class="dropdown">
@@ -56,7 +57,7 @@ Our Trips
     </div>
 
     <!-- Apply Filter Button -->
-    <button type="submit" class="btn btn-primary">Apply Filter</button>
+    <button type="submit" class="btn btn-primary">Search trips</button>
 
     <!-- Reset Link -->
     <a href="{% url 'view_all_trips' %}" class="btn btn-link">Reset</a>
