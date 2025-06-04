@@ -69,7 +69,12 @@ def view_trip_manage_pics(request, tid):
 
 @staff_member_required
 def view_pic_delete(request, pid):
-    picobj=get_object_or_404(TripGallery, id=pid)
+    picobj=TripGallery.objects.filter(id=pid).first()
+    if(not picobj):
+        next=request.GET.get("next","")
+        if(next):
+            return redirect(next)
+        return redirect("manage_trips")
     next=request.GET.get("next","")
     if(not next):
         next="view_trip_list"
@@ -80,7 +85,12 @@ def view_pic_delete(request, pid):
 
 @staff_member_required
 def view_pic_delete_confirm(request, pid):
-    picobj=get_object_or_404(TripGallery, id=pid)
+    picobj=TripGallery.objects.filter(id=pid).first()
+    if(not picobj):
+        next=request.GET.get("next","")
+        if(next):
+            return redirect(next)
+        return redirect("manage_trips")
     picobj.delete()
     messages.add_message(request, messages.INFO, "The picture was successfully deleted!")
     next=request.GET.get("next","")
@@ -91,7 +101,9 @@ def view_pic_delete_confirm(request, pid):
 
 @staff_member_required
 def view_trip_edit(request, tid):
-    tripdb=get_object_or_404(Trip, id=tid)
+    tripdb=Trip.objects.filter(id=tid).first()
+    if(not tripdb):
+        return redirect("manage_trips")  
     if(request.method=="POST"):
         formtrip=FormAddTrip(request.POST, instance=tripdb)
         if(formtrip.is_valid()):
@@ -111,16 +123,19 @@ def view_trip_edit(request, tid):
 
 @staff_member_required
 def view_trip_delete(request, tid):
-    tripobj=get_object_or_404(Trip, id=tid)
+    tripobj=Trip.objects.filter(id=tid).first()
+    if(not tripobj):
+        return redirect("manage_trips")  
     return render(request, "Managing/TripDelete.html",{
         "t":tripobj
     })
 
 @staff_member_required
 def view_trip_delete_confirm(request, tid):
-    tripobj=get_object_or_404(Trip, id=tid)
-    tripobj.delete()
-    messages.add_message(request, messages.INFO, "Trip was successfully deleted!")
+    tripobj=Trip.objects.filter(id=tid).first()
+    if(tripobj):
+        tripobj.delete()
+        messages.add_message(request, messages.INFO, "Trip was successfully deleted!")
     return redirect("manage_trips")  
 
 #################################################################################
@@ -166,7 +181,10 @@ def view_schedule_add(request):
 
 @staff_member_required
 def view_schedule_edit(request, sched_id):
-    sched=get_object_or_404(Schedule, id=sched_id)
+    #sched=get_object_or_404(Schedule, id=sched_id)
+    sched=Schedule.objects.filter(id=sched_id).first()
+    if(not sched):
+        return redirect("manage_schedule")
     if(request.method=="POST"):
         formsched=FormAddSchedule(request.POST, instance=sched)
         if(formsched.is_valid()):
@@ -182,7 +200,7 @@ def view_schedule_edit(request, sched_id):
             if(len(overlaps)==0):
                 formsched.save()
                 messages.add_message(request, messages.INFO, "Changes saved successfully!")
-                return redirect("manage_schedule")   
+                return redirect("manage_schedule")
             messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))
     else:
         formsched=FormAddSchedule(instance=sched)
@@ -193,7 +211,10 @@ def view_schedule_edit(request, sched_id):
 
 @staff_member_required
 def view_schedule_delete(request, sched_id):
-    schedobj=get_object_or_404(Schedule, id=sched_id)
+    #schedobj=get_object_or_404(Schedule, id=sched_id)
+    schedobj=Schedule.objects.filter(id=sched_id).first()
+    if(not schedobj):
+        return redirect("manage_schedule")
     """
     if(request.method=="DELETE"):
         messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
@@ -205,9 +226,11 @@ def view_schedule_delete(request, sched_id):
 
 @staff_member_required
 def view_schedule_delete_conf(request, sched_id):
-    schedobj=get_object_or_404(Schedule, id=sched_id)
-    schedobj.delete()
-    messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
+    #schedobj=get_object_or_404(Schedule, id=sched_id)
+    schedobj=Schedule.objects.filter(id=sched_id).first()
+    if(schedobj):
+        schedobj.delete()
+        messages.add_message(request, messages.INFO, "The entry was successfully deleted!")
     return redirect("manage_schedule")  
 
 #################################################################################
@@ -234,13 +257,16 @@ def view_guide_add(request):
 
 @staff_member_required
 def view_guide_edit(request, gid):
-    dbguide=get_object_or_404(Guide, id=gid)
+    #dbguide=get_object_or_404(Guide, id=gid)
+    dbguide=Guide.objects.filter(id=gid).first()
+    if(not dbguide):
+        return redirect("manage_guides")
     if(request.method=="POST"):
         formguid=FormGuide(request.POST, instance=dbguide)
         if(formguid.is_valid()):
             formguid.save()
             messages.add_message(request, messages.INFO, "Changes saved successfully!")
-            return redirect("manage_guides")   
+            return redirect("manage_guides")
     else:
         formguid=FormGuide(instance=dbguide)
     return render(request,"Managing/GuideEdit.html",{
@@ -250,15 +276,20 @@ def view_guide_edit(request, gid):
 
 @staff_member_required
 def view_guide_delete(request, gid):
-    guideobj=get_object_or_404(Guide, id=gid)
+    #guideobj=get_object_or_404(Guide, id=gid)
+    guideobj=Guide.objects.filter(id=gid).first()
+    if(not guideobj):
+        return redirect("manage_guides")
     return render(request, "Managing/GuideDelete.html",{
         "g":guideobj
     })
     
 @staff_member_required
 def view_guide_delete_confirm(request, gid):
-    guideobj=get_object_or_404(Guide, id=gid)
-    guideobj.delete()
-    messages.add_message(request, messages.INFO, "The guide was successfully deleted!")
+    #guideobj=get_object_or_404(Guide, id=gid)
+    guideobj=Guide.objects.filter(id=gid).first()
+    if(guideobj):
+        guideobj.delete()
+        messages.add_message(request, messages.INFO, "The guide was successfully deleted!")
     return redirect("manage_guides")  
 #################################################################################
