@@ -1,0 +1,4 @@
+Django: works with 5.1.5 and higher
+Python: works with 3.12 and higher
+
+Lower versions may be supported, but are untested.
