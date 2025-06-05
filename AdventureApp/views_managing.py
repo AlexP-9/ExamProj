@@ -172,7 +172,7 @@ def view_schedule_add(request):
                 messages.add_message(request, messages.INFO, "Successfully scheduled a new advenure!")
                 return redirect("manage_schedule")
 
-            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflict{'s' if len(overlaps)>1 else ''}): "+";\n".join(str(o) for o in overlaps))       
+            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o.trip.title)+" - from "+str(o.start.date())+" to "+ str(o.end.date()) for o in overlaps))
     else:
         formsched=FormAddSchedule()
     return render(request,"Managing/ScheduleEdit.html",{
@@ -201,7 +201,7 @@ def view_schedule_edit(request, sched_id):
                 formsched.save()
                 messages.add_message(request, messages.INFO, "Changes saved successfully!")
                 return redirect("manage_schedule")
-            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o) for o in overlaps))
+            messages.add_message(request, messages.INFO, f"There is an overlap with existing schedule! ({len(overlaps)} conflicts): "+";\n".join(str(o.trip.title)+" - from "+str(o.start.date())+" to "+ str(o.end.date()) for o in overlaps))
     else:
         formsched=FormAddSchedule(instance=sched)
     return render(request,"Managing/ScheduleEdit.html",{

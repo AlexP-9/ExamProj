@@ -28,7 +28,7 @@
           <a href="{% url 'trip_register' s.id %}" class="btn btn-outline-dark px-4">{{ s.start }}</a>
         {% endfor %}
       </div>
-      <a href="{% url 'trip_full_schedule' tripobj.id %}" class="btn btn-danger px-4">See other available dates</a>
+      <a href="{% url 'trip_full_schedule' tripobj.id %}" class="btn btn-danger px-4">See all available dates</a>
     {% else %}
       <p class="text-muted">(No available dates so far)</p>
     {% endif %}

@@ -56,5 +56,5 @@ urlpatterns = [
     path("manage/guide/<int:gid>/delete/confirm/",views_managing.view_guide_delete_confirm,name="guide_delete_confirm"),
 
 
-    path("debug/",views.view_debug,name="debug"),
+    #path("debug/",views.view_debug,name="debug"),
 ]

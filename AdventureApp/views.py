@@ -209,7 +209,7 @@ def view_trip(request, tid):
                         customer=request.user,
                         revtrip=tripdb
                         ).save()
-
+        return redirect("trip",tid=tid)
             
    
     return render(request, "Trips/TripPage.html",
